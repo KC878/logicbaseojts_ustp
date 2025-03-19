@@ -7,7 +7,7 @@ import type { TableProps } from 'antd';
 
 
 
-const CashierInfoTable: React.FC = ( { contentData }) => {
+const CashierInfoTable: React.FC = ( { cashiersData }) => {
 
   interface DataType {
     key: number;
@@ -26,7 +26,7 @@ const CashierInfoTable: React.FC = ( { contentData }) => {
   
   
   
-  const data: DataType[] = contentData.map((item, index) => ({
+  const data: DataType[] = cashiersData.map((item, index) => ({
     key: index,
     name: item.name,
     shift: item.shift

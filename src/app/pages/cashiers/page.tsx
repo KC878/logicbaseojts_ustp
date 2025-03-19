@@ -3,42 +3,16 @@
 
 import TableCashiers from '../../../components/TableCashiers';
 
-import { useEffect, useState } from 'react';
+import useCashiers from '../../../hooks/useCashier'; // custom hook
+
 
 const CashiersPage = () => {
-  const [cashiers, setCashiers] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-
-    const fetchCashiers = async () => {
-      try {
-        const res = await fetch('/api/getCashierInfo');
-        
-        if(!res.ok) throw new Error('Failed to fetch cashiers');
-
-        const data = await res.json();
-        setCashiers(data);
-      } catch (error) {
-        console.error('Error Fetching cashiers: ', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCashiers();
-  }, []);
-
-  const data = [
-    {key: 1, name: 'John Brown', shift: 'AM'},
-    {key: 2, name: 'Jayden Black', shift: 'PM'}
-  ];
-
+  const { cashiers, loading } = useCashiers();
   return (
     <>
       <div> Cashiers </div>
       {loading ? <p> Loading.. </p> :
-        <TableCashiers contentData = {cashiers}/>
+        <TableCashiers cashiersData = {cashiers}/>
       }
       
     </>
