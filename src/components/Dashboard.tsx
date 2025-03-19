@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import {
+  LoginOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
+  LogoutOutlined,
   UserOutlined,
-  VideoCameraOutlined,
+  DashboardOutlined,
 } from '@ant-design/icons';
 import { Button, Layout, Menu, theme } from 'antd';
 
 // importing Pages
 import CashiersPage from '../app/pages/cashiers/page'
 import Home from '../app/pages/dashboard/page'
-
-import Link from 'next/link';
 
 
 const { Header, Footer, Sider, Content} = Layout;
@@ -28,7 +27,9 @@ const Dashboard: React.FC = ({children}) => {
 
   const handleMenuClick = ({key}: {key: string }) => {
     setMenuItem(key); 
+    
 
+    // passing over pages 
     if (key === '1'){
       setSelectedComponent(
       <CashiersPage />
@@ -63,13 +64,13 @@ const Dashboard: React.FC = ({children}) => {
             },
             {
               key: '2',
-              icon: <VideoCameraOutlined />,
-              label: 'nav 2',
+              icon: <DashboardOutlined />,
+              label: 'Dashboard',
             },
             {
               key: '3',
-              icon: <UploadOutlined />,
-              label: 'nav 3',
+              icon: <LogoutOutlined />,
+              label: 'Logout',
             },
           ]}
         />
