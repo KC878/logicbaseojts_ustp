@@ -1,98 +1,80 @@
 import React, { useState } from 'react';
-import {
-  LoginOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  LogoutOutlined,
-  UserOutlined,
-  DashboardOutlined,
-} from '@ant-design/icons';
 import { Button, Layout, Menu, theme } from 'antd';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 
-// importing Pages
-import CashiersPage from '../app/pages/cashiers/page'
-import Home from '../app/pages/dashboard/page'
+const { Header, Footer, Sider, Content } = Layout;
 
+interface MenuItem {
+  key: string;
+  label: string;
+  icon: React.ReactNode;
+  component: React.ReactNode;
+}
 
-const { Header, Footer, Sider, Content} = Layout;
+interface DashboardLayoutProps {
+  menuItems: MenuItem[];
+  defaultTitle?: string; // Default title for the dashboard
+}
 
-
-
-const Dashboard: React.FC = ({children}) => {
+const Dashboard: React.FC<DashboardLayoutProps> = ({ menuItems, defaultTitle = 'Dashboard' }) => {
+  // State to manage sidebar collapse and selected component
   const [collapsed, setCollapsed] = useState(false);
-  const [selectedComponent, setSelectedComponent] = useState(null); 
-  
-  const [menuItem, setMenuItem] = useState('1'); // menu item
+  const [selectedComponent, setSelectedComponent] = useState(menuItems[0]?.component);
+  const [title, setTitle] = useState(defaultTitle); // State for the title
 
-
-  const handleMenuClick = ({key}: {key: string }) => {
-    setMenuItem(key); 
-    
-
-    // passing over pages 
-    if (key === '1'){
-      setSelectedComponent(
-      <CashiersPage />
-    );
-    }else{
-      setSelectedComponent(null);
+  // Handle Menu Clicks
+  const handleMenuClick = ({ key }: { key: string }) => {
+    const selectedItem = menuItems.find((item) => item.key === key);
+    if (selectedItem) {
+      setSelectedComponent(selectedItem.component);
+      setTitle(selectedItem.label); // Update the title dynamically
     }
-  }
+  };
 
-
-
+  // Extracting theme tokens
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
   return (
     <Layout>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
+      {/* Sidebar */}
+      <Sider 
+        trigger={null} collapsible collapsed={collapsed}
+        style={{
+          height: '117vh',
+          padding: '20px',
+        }}
+      >
         <div className="demo-logo-vertical" />
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={'1'}
-          //selectedKeys={[setMenuItem]} //
+          defaultSelectedKeys={[menuItems[0]?.key]}
           onClick={handleMenuClick}
-
-          items={[
-            {
-              key: '1',
-              icon: <UserOutlined />,
-              label: 'Cashiers'
-            },
-            {
-              key: '2',
-              icon: <DashboardOutlined />,
-              label: 'Dashboard',
-            },
-            {
-              key: '3',
-              icon: <LogoutOutlined />,
-              label: 'Logout',
-            },
-          ]}
+          items={menuItems.map((item) => ({
+            key: item.key,
+            icon: item.icon,
+            label: item.label,
+          }))}
         />
       </Sider>
+
+      {/* Header (Title Updates Dynamically) */}
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }}>
           <Button
             type="text"
-            
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-
-
             onClick={() => setCollapsed(!collapsed)}
-
-
-            style={{
-              fontSize: '16px',
-              width: 64,
-              height: 64,
-            }}
+            style={{ fontSize: '16px', width: 64, height: 64 }}
           />
+          <span style={{ marginLeft: '16px', fontSize: '18px', fontWeight: 'bold' }}>
+            {title}
+          </span>
         </Header>
+
+        {/* Content */}
         <Content
           style={{
             margin: '24px 16px',
@@ -106,7 +88,7 @@ const Dashboard: React.FC = ({children}) => {
         </Content>
 
         <Footer style={{ textAlign: 'center' }}>
-          Ant Design ©{new Date().getFullYear()} Created by USTP
+          Ant Design ©{new Date().getFullYear()} Created by Cagadas USTP 
         </Footer>
       </Layout>
     </Layout>

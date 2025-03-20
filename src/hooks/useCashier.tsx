@@ -4,6 +4,7 @@ const useCashiers = () => {
   const [cashiers, setCashiers] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
 
     const fetchCashiers = async () => {

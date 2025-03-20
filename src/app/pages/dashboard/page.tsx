@@ -1,17 +1,20 @@
 'use client'
 
-import { useEffect, useState } from 'react';
+import { HomeOutlined, SettingOutlined, UserOutlined} from '@ant-design/icons';
+import CashiersPage from '../cashiers/page'
+const menuItems = [
+  { key: 'Cashiers', label: 'Cashiers', icon: <UserOutlined/ >, component: <CashiersPage /> },
+  { key: 'Dashboard', label: 'Home', icon: <HomeOutlined />, component: <div > Welcome  Home! </div>},
+  { key: 'Settings', label: 'Settings', icon: <SettingOutlined />, component: <div> Settings Page </div> }
+]
+
 
 import Dashboard from '../../../components/Dashboard'
-
 
 const Home = () => {
 
   return(
-    <Dashboard> 
-      
-    </Dashboard>
-
+    <Dashboard menuItems={menuItems}/> 
   );
 }
 
