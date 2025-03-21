@@ -9,7 +9,7 @@ export async function GET() {
     return NextResponse.json(rows, { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { error: error.message },  // ✅ Corrected typo
+      { error: error },  // ✅ Corrected typo
       { status: 500 }
     );
   }

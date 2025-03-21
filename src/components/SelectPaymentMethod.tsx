@@ -1,80 +1,50 @@
-
 'use client'
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Select } from 'antd';
-// import { useState } from 'react';
-import { useState, useEffect } from 'react';
 
 interface OptionType {
-	value: string;
-	label: string;
-	
+  value: string;
+  label: string;
 }
-const onChange = (value: string) => {
-  console.log(`selected ${value}`);
-};
-
-const onSearch = (value: string) => {
-  console.log('search:', value);
-};
-
-
-
-const options: OptionType[] = [
-  { value: 'jack', label: 'Jack' },
-  { value: 'lucy', label: 'Lucy' },
-  { value: 'tom', label: 'Tom' },
-];
-
-
-
 
 const SelectPaymentMethod: React.FC = () => {
-	const [paymentMethods, setPaymentMethods] = useState([]);
+  const [paymentMethods, setPaymentMethods] = useState<OptionType[]>([]);
 
-  
-  const options: OptionType[] = paymentMethods.map(item => {
-    return { 
-      value: item.payment_type.toLowerCase(), 
-      label: item.payment_type}; 
-  });
-
-  useEffect(() =>{
-
-    const fetchPaymentMethonds = async () => {
-      try{
+  useEffect(() => {
+    const fetchPaymentMethods = async () => {
+      try {
         const res = await fetch('/api/getPaymentMethods');
         const data = await res.json();
-        setPaymentMethods(data);
-        console.log(data);
-        
-      }catch(error){
-        console.error('Failed  to fetch Payment Method: ', error);
+
+        // Ensure data is an array before setting state
+        if (Array.isArray(data)) {
+          setPaymentMethods(
+            data.map((item) => ({
+              value: item.payment_type.toLowerCase(),
+              label: item.payment_type,
+            })) as OptionType[]
+          );
+        }
+      } catch (error) {
+        console.error('Failed to fetch Payment Methods:', error);
       }
-    
     };
 
-
-    fetchPaymentMethonds();
-
+    fetchPaymentMethods();
   }, []);
-	
-  return(
-    <Select<OptionType> 
+
+  return (
+    <Select
       showSearch
       placeholder="Select Payment Method"
       optionFilterProp="label"
-      onChange={onChange}
-      onSearch={onSearch}
-      options={options}
-
-      style={{
-        width: 200
-      }}
-	  />
+      onChange={(value) => console.log(`Selected: ${value}`)}
+      onSearch={(value) => console.log('Search:', value)}
+      options={paymentMethods}
+      style={{ width: 200 }}
+    />
   );
-	
 };
 
 export default SelectPaymentMethod;

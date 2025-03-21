@@ -1,7 +1,12 @@
 import React from 'react';
 import { Button, Form, Input, Select } from 'antd';
 
-const AddCashier: React.FC<{ onSubmit: (values: any) => void; onCancel: () => void }> = ({ onSubmit, onCancel }) => {
+interface AddCashierProps {
+  onSubmit: (values: { name: string; shift: string }) => void;
+  onCancel: () => void;
+}
+
+const AddCashier: React.FC<AddCashierProps> = ({ onSubmit, onCancel }) => {
   const [form] = Form.useForm();
 
   return (
@@ -15,24 +20,30 @@ const AddCashier: React.FC<{ onSubmit: (values: any) => void; onCancel: () => vo
         wrapperCol={{ flex: 1 }}
         colon={false}
         style={{ flex: 1, maxWidth: 600 }}
-        onFinish={onSubmit} // ✅ Form submission handled here
+        onFinish={onSubmit} // ✅ Correctly handling form submission
       >
-        <Form.Item label="Enter Name" name="name" rules={[{ required: true, message: 'Please enter the cashier\'s name' }]}>
+        <Form.Item 
+          label="Enter Name" 
+          name="name" 
+          rules={[{ required: true, message: "Please enter the cashier's name" }]}
+        >
           <Input />
         </Form.Item>
 
-        <Form.Item label="Shift" name="shift" rules={[{ required: true, message: 'Please select a shift' }]}>
-
+        <Form.Item 
+          label="Shift" 
+          name="shift" 
+          rules={[{ required: true, message: 'Please select a shift' }]}
+        >
           <Select
-            initialValue=''
             style={{ width: 120 }}
             allowClear
+            placeholder="Select shift"
             options={[
               { value: 'am', label: 'AM' },
               { value: 'mid', label: 'MID' },
               { value: 'pm', label: 'PM' },
             ]}
-            placeholder="select it"
           />
         </Form.Item>
 
@@ -41,7 +52,7 @@ const AddCashier: React.FC<{ onSubmit: (values: any) => void; onCancel: () => vo
           <Button onClick={onCancel} style={{ marginRight: 8 }}>
             Cancel
           </Button>
-          <Button type="primary" htmlType="submit"> {/* ✅ Removed unnecessary onClick */}
+          <Button type="primary" htmlType="submit">
             Submit
           </Button>
         </div>
