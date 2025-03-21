@@ -33,12 +33,8 @@ const options: OptionType[] = [
 
 const SelectPaymentMethod: React.FC = () => {
 	const [paymentMethods, setPaymentMethods] = useState([]);
-	
-//   const options: OptionType[] = [
-//   { value: 'jack', label: 'Jack' },
-//   { value: 'lucy', label: 'Lucy' },
-//   { value: 'tom', label: 'Tom' },
-// ];
+
+  
   const options: OptionType[] = paymentMethods.map(item => {
     return { 
       value: item.payment_type.toLowerCase(), 
@@ -73,7 +69,10 @@ const SelectPaymentMethod: React.FC = () => {
       onChange={onChange}
       onSearch={onSearch}
       options={options}
-	
+
+      style={{
+        width: 200
+      }}
 	  />
   );
 	
