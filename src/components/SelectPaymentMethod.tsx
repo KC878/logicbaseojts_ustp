@@ -5,7 +5,6 @@ import React from 'react';
 import { Select } from 'antd';
 // import { useState } from 'react';
 import { useState, useEffect } from 'react';
-import { getPaymentMethods } from '@src/lib/querries/querries';
 
 interface OptionType {
 	value: string;
