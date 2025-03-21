@@ -24,7 +24,7 @@ const AddCashier: React.FC<{ onSubmit: (values: any) => void; onCancel: () => vo
         <Form.Item label="Shift" name="shift" rules={[{ required: true, message: 'Please select a shift' }]}>
 
           <Select
-            defaultValue=''
+            initialValue=''
             style={{ width: 120 }}
             allowClear
             options={[
