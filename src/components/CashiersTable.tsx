@@ -3,15 +3,19 @@ import { Table } from 'antd';
 import type { TableProps } from 'antd';
 
 interface DataType {
-  key: number;
+  key: number; // Ensures unique key for each row
   name: string;
   shift: string;
 }
+
+interface PaginationProps {
+  pagination: { current: number; pageSize: number; total: number };
+  setPagination: React.Dispatch<React.SetStateAction<{ current: number; pageSize: number; total: number }>>;
+}
+
 const CashierInfoTable: React.FC<{ 
   cashiersData: DataType[], 
-  pagination: { current: number, pageSize: number },
-  setPagination: (pagination: { current: number, pageSize: number }) => void
-}> = ({ cashiersData, pagination, setPagination }) => {
+} & PaginationProps> = ({ cashiersData, pagination, setPagination }) => {
 
   const columns: TableProps<DataType>['columns'] = [
     { title: 'Name', dataIndex: 'name', key: 'name' },
@@ -25,9 +29,10 @@ const CashierInfoTable: React.FC<{
       pagination={{
         current: pagination.current,
         pageSize: pagination.pageSize,
-        onChange: (page, pageSize) => setPagination({ current: page, pageSize }), // ✅ Maintain pagination state
+        total: pagination.total, // Ensure total is always provided
+        onChange: (page, pageSize) => setPagination(prev => ({ ...prev, current: page, pageSize })),
       }}
-      rowKey="key"
+      rowKey="key" // Ensure each row has a unique key
     />
   );
 }
