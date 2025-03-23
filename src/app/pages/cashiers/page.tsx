@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react';
-import CashierInfoTable from '../../../components/CashiersTable';
-import MyModal from '../../../components/AddCashierModal';
+import CashierInfoTable from '../../../utils/WorkingComponents/CashiersTable';
+import MyModal from '../../../utils/WorkingComponents/AddCashierModal';
 
 // Define a type for Cashier data
 interface Cashier {

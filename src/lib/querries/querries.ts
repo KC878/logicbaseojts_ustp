@@ -11,18 +11,17 @@ export const getPosSummary = "SELECT * FROM pos_summary";
 
 export const getShortOverPos = "SELECT * FROM short_over_pos";
 
-export const getTransactions = `
-  SELECT 
-    transactions.id AS transaction_id,
-    DATE(transactions.date) AS transaction_date, -- Added alias
-    transactions.shift AS transaction_shift,
-    transactions.amount,
-    cashiers.id AS cashier_id,
-    cashiers.name AS cashier_name,
-    cashiers.shift AS cashier_shift
-  FROM transactions
-  JOIN cashiers ON transactions.cashier_id = cashiers.id;
+export const getTransactions = `SELECT
+
+  transactions.id,
+  cashiers.name AS cashier_name,
+  transactions.shift AS shift,
+  transactions.amount AS transaction_amount,
+  DATE(transactions.date) AS transaction_date
+FROM cashiers
+INNER JOIN transactions ON cashiers.id = transactions.cashier_id;
 `;
+
 
 
 

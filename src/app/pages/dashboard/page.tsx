@@ -1,25 +1,55 @@
 'use client'
 
-import { HomeOutlined, SettingOutlined, UserOutlined} from '@ant-design/icons';
-import CashiersPage from '../cashiers/page'
-const menuItems = [
-  { key: 'Cashiers', label: 'Cashiers', icon: <UserOutlined/ >, component: <CashiersPage /> },
-  { key: 'Dashboard', label: 'Home', icon: <HomeOutlined />, component: <div > Welcome  Home! </div>},
-  { key: 'Settings', label: 'Settings', icon: <SettingOutlined />, component: <div> Settings Page </div> }
-]
+// import { HomeOutlined, SettingOutlined, UserOutlined} from '@ant-design/icons';
+// import CashiersPage from '../cashiers/page'
+// const menuItems = [
+//   { key: 'Cashiers', label: 'Cashiers', icon: <UserOutlined/ >, component: <CashiersPage /> },
+//   { key: 'Dashboard', label: 'Home', icon: <HomeOutlined />, component: <div > Welcome  Home! </div>},
+//   { key: 'Settings', label: 'Settings', icon: <SettingOutlined />, component: <div> Settings Page </div> }
+// ]
 
 
-import Dashboard from '../../../components/Dashboard'
+// import Dashboard from '../../../utils/WorkingComponents/Dashboard'
 
-const Home = () => {
+import Dashboard from '../../../components/Dashboard';
+import { useState } from 'react';
 
+const DashboardPage = () => {
+  const [headerContent, setHeaderContent] = useState<string>('Dashboard'); // type string and default Dashboard
+  const [mainContent, setMainContent] = useState<string>('Content here'); // type string and dfeault content
+  const menuItems = [
+    'Cashiers',
+    'Dashboard',
+    'Settings',
+    'Logout'
+  ]
+ 
+  const content = [
+    <h1 key={'hello'}> Hello World </h1> // key is necessary here to specify uniqueness
+  ] 
+
+  const footerContent = 'POS System - Cagadas USTP';
+
+
+  // useStates 
+  
   return(
-    <Dashboard menuItems={menuItems}/> 
+    <Dashboard 
+      menuItems={menuItems} 
+      content={content}
+      footerContent={footerContent}
+
+      headerContent={headerContent}
+      setHeaderContent={setHeaderContent}
+
+      mainContent={mainContent}
+      setMainContent={setMainContent}
+    /> 
   );
 }
 
 
-export default Home;
+export default DashboardPage;
 
 
 

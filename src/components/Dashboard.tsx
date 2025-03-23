@@ -1,80 +1,125 @@
 import React, { useState } from 'react';
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  UserOutlined,
+  SettingOutlined,
+  DashboardOutlined,
+  LogoutOutlined
+} from '@ant-design/icons';
 import { Button, Layout, Menu, theme } from 'antd';
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+
 
 const { Header, Footer, Sider, Content } = Layout;
 
-interface MenuItem {
-  key: string;
-  label: string;
-  icon: React.ReactNode;
-  component: React.ReactNode;
+// Props Interface
+interface DashboardProps {
+  menuItems: string[];
+  content: React.ReactNode;
+  footerContent: string;
+
+  headerContent: string; // mayBe Changed depending on what is beingpassed 
+  setHeaderContent: React.Dispatch<React.SetStateAction<string>>; 
+
+  mainContent: string;
+  setMainContent: React.Dispatch<React.SetStateAction<string>>;
 }
 
-interface DashboardLayoutProps {
-  menuItems: MenuItem[];
-  defaultTitle?: string; // Default title for the dashboard
-}
+const menuIcons = [
+  <DashboardOutlined />, 
+  <UserOutlined />, 
+  <SettingOutlined />,
+  <LogoutOutlined />
+];
 
-const Dashboard: React.FC<DashboardLayoutProps> = ({ menuItems, defaultTitle = 'Dashboard' }) => {
-  // State to manage sidebar collapse and selected component
+
+const Dashboard: React.FC<DashboardProps> = ({ 
+  menuItems, 
+  content, 
+  footerContent, 
+  
+  headerContent, 
+  setHeaderContent,
+
+  mainContent, 
+  setMainContent
+}) => {
   const [collapsed, setCollapsed] = useState(false);
-  const [selectedComponent, setSelectedComponent] = useState(menuItems[0]?.component);
-  const [title, setTitle] = useState(defaultTitle); // State for the title
-
-  // Handle Menu Clicks
-  const handleMenuClick = ({ key }: { key: string }) => {
-    const selectedItem = menuItems.find((item) => item.key === key);
-    if (selectedItem) {
-      setSelectedComponent(selectedItem.component);
-      setTitle(selectedItem.label); // Update the title dynamically
-    }
-  };
-
-  // Extracting theme tokens
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-
   return (
     <Layout>
       {/* Sidebar */}
-      <Sider 
-        trigger={null} collapsible collapsed={collapsed}
+      <Sider
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
         style={{
-          height: '117vh',
-          padding: '20px',
+          height: '100vh',
+          background: '#3fa3da',
+          transition: 'all 0.3s ease-in-out',
+          boxShadow: '2px 0 10px rgba(0, 0, 0, 0.1)',
         }}
+        width={250} // Expanded Width
+        collapsedWidth={80} // Collapsed Width
       >
-        <div className="demo-logo-vertical" />
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={[menuItems[0]?.key]}
-          onClick={handleMenuClick}
-          items={menuItems.map((item) => ({
-            key: item.key,
-            icon: item.icon,
-            label: item.label,
-          }))}
-        />
-      </Sider>
-
-      {/* Header (Title Updates Dynamically) */}
-      <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: 64,
+            borderBottom: '1px solid #f0f0f0',
+            padding: '0 16px',
+          }}
+        >
           <Button
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             onClick={() => setCollapsed(!collapsed)}
-            style={{ fontSize: '16px', width: 64, height: 64 }}
+            style={{
+              fontSize: '18px',
+              color: '#333',
+              background: '#e8e9eb'
+            }}
           />
-          <span style={{ marginLeft: '16px', fontSize: '18px', fontWeight: 'bold' }}>
-            {title}
-          </span>
-        </Header>
+        </div>
 
-        {/* Content */}
+        {/* Menu */}
+        <Menu
+          theme="light"
+          mode="inline"
+          defaultSelectedKeys={['1']}
+          items={menuItems.map((item, index) => ({
+            key: item.toLowerCase(),
+            icon: menuIcons[index],
+            label: item,
+            onClick: () => {
+              setHeaderContent(item)
+              setMainContent(item)
+            }
+
+          }))}
+          style={{
+            borderRight: 'none',
+            background: '#3fa3da'
+          }}
+         
+        />
+      </Sider>
+
+      {/* Main Layout */}
+      <Layout>
+        <div className='container-fluid'>
+
+        <Header style={{ textAlign: 'center', padding: 0, background: colorBgContainer, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+          <h2>
+            {headerContent}
+          </h2>
+        </Header>
+        </div>
+        
         <Content
           style={{
             margin: '24px 16px',
@@ -84,15 +129,16 @@ const Dashboard: React.FC<DashboardLayoutProps> = ({ menuItems, defaultTitle = '
             borderRadius: borderRadiusLG,
           }}
         >
-          {selectedComponent}
+          {mainContent}
         </Content>
 
         <Footer style={{ textAlign: 'center' }}>
-          Ant Design ©{new Date().getFullYear()} Created by Cagadas USTP 
+          {footerContent}
         </Footer>
       </Layout>
     </Layout>
   );
 };
+
 
 export default Dashboard;
