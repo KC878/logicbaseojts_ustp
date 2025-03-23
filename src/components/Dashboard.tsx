@@ -15,7 +15,6 @@ const { Header, Footer, Sider, Content } = Layout;
 // Props Interface
 interface DashboardProps {
   menuItems: string[];
-  content: React.ReactNode;
   footerContent: string;
 
   headerContent: string; // mayBe Changed depending on what is beingpassed 
@@ -26,16 +25,15 @@ interface DashboardProps {
 }
 
 const menuIcons = [
-  <DashboardOutlined />, 
-  <UserOutlined />, 
-  <SettingOutlined />,
-  <LogoutOutlined />
+  <DashboardOutlined key={'dashboard'}/>, 
+  <UserOutlined key={'cashiers'}/>, 
+  <SettingOutlined key={'dashboard'} />,
+  <LogoutOutlined key={'logout'}/>
 ];
 
 
 const Dashboard: React.FC<DashboardProps> = ({ 
   menuItems, 
-  content, 
   footerContent, 
   
   headerContent, 

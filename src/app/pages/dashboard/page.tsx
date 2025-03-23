@@ -24,10 +24,6 @@ const DashboardPage = () => {
     'Logout'
   ]
  
-  const content = [
-    <h1 key={'hello'}> Hello World </h1> // key is necessary here to specify uniqueness
-  ] 
-
   const footerContent = 'POS System - Cagadas USTP';
 
 
@@ -36,7 +32,6 @@ const DashboardPage = () => {
   return(
     <Dashboard 
       menuItems={menuItems} 
-      content={content}
       footerContent={footerContent}
 
       headerContent={headerContent}
