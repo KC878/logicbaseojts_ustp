@@ -2,19 +2,15 @@
 
 import SelectMultiple from "@src/components/SelectMultiple";
 
-import useCashiers from "@src/hooks/useCashiers";
-
 const test = () => {
-  const { cashiers } = useCashiers();
-
   const shifts = [
-    'AM',
-    'MID',
-    'PM'
+    { label: 'AM', value: 'AM' },
+    { label: 'MID', value: 'MID' },
+    { label: 'PM', value: 'PM' }
   ]
 
   return (
-
+    
     <SelectMultiple options={shifts}/> 
   );
 }
