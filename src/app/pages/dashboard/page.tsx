@@ -13,6 +13,9 @@
 
 import Dashboard from '../../../components/Dashboard';
 
+
+
+// importing pages
 import CashiersPage from '../cashiers/page';
 
 import React, { useState } from 'react';

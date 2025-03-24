@@ -4,10 +4,10 @@
 import useCashiers from '@src/hooks/useCashiers'; // useHooks from now On to Get data
 
 import CashiersTable from '@src/components/CashiersTable';
+import AddDrawer from '@src/components/AddDrawer';
 
 const CashiersPage:  React.FC = () => {
   const { cashiers, loading } = useCashiers(); // properly type string
-
 
 
   const columns = [
@@ -17,7 +17,8 @@ const CashiersPage:  React.FC = () => {
   
   return(
     
-    <>  
+    <>
+      <AddDrawer />
       <CashiersTable cashiers={cashiers} columns={columns} />
 
     </>

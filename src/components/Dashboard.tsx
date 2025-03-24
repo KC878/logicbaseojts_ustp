@@ -24,8 +24,8 @@ interface DashboardProps {
 
 
 const menuIcons = [
-  <DashboardOutlined key={"dashboard"} />,
   <UserOutlined key={"cashiers"} />,
+  <DashboardOutlined key={"dashboard"} />,
   <SettingOutlined key={"settings"} />,
   <LogoutOutlined key={"logout"} />,
 ];
@@ -43,7 +43,7 @@ const Dashboard: React.FC<DashboardProps> = ({
   // Ensure `window.innerWidth` is accessed only on the client
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setCollapsed(window.innerWidth < 768);
+      setCollapsed(window.innerWidth < 600);
     }
   }, []);
 

@@ -12,8 +12,12 @@ DROP TABLE IF EXISTS cashiers;
 CREATE TABLE cashiers (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
-    shift ENUM('AM', 'MID', 'PM') NOT NULL
+    shift ENUM('AM', 'MID', 'PM') NOT NULL,
+    start_date DATE,
+    end_date DATE,
+    is_active TINYINT(1) NOT NULL DEFAULT 1
 );
+
 
 -- Create Payment Methods Table
 CREATE TABLE payment_methods (
