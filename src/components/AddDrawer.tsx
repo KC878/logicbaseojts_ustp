@@ -37,7 +37,7 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ children }) => {
   return (
     <>
       <Button type="primary" onClick={showDrawer} icon={<PlusOutlined />}>
-        New account
+        Add Cashier
       </Button>
       <Drawer
         title="Add Cashier"
