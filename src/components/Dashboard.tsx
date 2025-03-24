@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   UserOutlined,
   SettingOutlined,
   DashboardOutlined,
-  LogoutOutlined
-} from '@ant-design/icons';
-import { Button, Layout, Menu, theme } from 'antd';
-
+  LogoutOutlined,
+} from "@ant-design/icons";
+import { Button, Layout, Menu, theme } from "antd";
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -16,127 +15,142 @@ const { Header, Footer, Sider, Content } = Layout;
 interface DashboardProps {
   menuItems: string[];
   footerContent: string;
-
-  headerContent: string; // mayBe Changed depending on what is beingpassed 
-  setHeaderContent: React.Dispatch<React.SetStateAction<string>>; 
-
-  mainContent: string;
-  setMainContent: React.Dispatch<React.SetStateAction<string>>;
+  headerContent: string;
+  setHeaderContent: React.Dispatch<React.SetStateAction<string>>;
+  menuPages: React.ReactNode[];
 }
 
+
+
+
 const menuIcons = [
-  <DashboardOutlined key={'dashboard'}/>, 
-  <UserOutlined key={'cashiers'}/>, 
-  <SettingOutlined key={'dashboard'} />,
-  <LogoutOutlined key={'logout'}/>
+  <DashboardOutlined key={"dashboard"} />,
+  <UserOutlined key={"cashiers"} />,
+  <SettingOutlined key={"settings"} />,
+  <LogoutOutlined key={"logout"} />,
 ];
 
-
-const Dashboard: React.FC<DashboardProps> = ({ 
-  menuItems, 
-  footerContent, 
-  
-  headerContent, 
+const Dashboard: React.FC<DashboardProps> = ({
+  menuItems,
+  footerContent,
+  headerContent,
   setHeaderContent,
-
-  mainContent, 
-  setMainContent
+  menuPages,
 }) => {
   const [collapsed, setCollapsed] = useState(false);
+  const [pageIndex, setPageIndex] = useState(0);
+
+  // Ensure `window.innerWidth` is accessed only on the client
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setCollapsed(window.innerWidth < 768);
+    }
+  }, []);
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+  
   return (
-    <Layout>
+    <Layout style={{ minHeight: "100vh" }}>
       {/* Sidebar */}
       <Sider
         trigger={null}
         collapsible
         collapsed={collapsed}
+        width={260}
+        collapsedWidth={80}
         style={{
-          height: '100vh',
-          background: '#3fa3da',
-          transition: 'all 0.3s ease-in-out',
-          boxShadow: '2px 0 10px rgba(0, 0, 0, 0.1)',
+          height: "100vh",
+          background: "#3fa3da",
+          transition: "all 0.3s ease-in-out",
+          position: "fixed",
+          left: 0,
+          top: 0,
+          bottom: 0,
+          zIndex: 1000,
         }}
-        width={250} // Expanded Width
-        collapsedWidth={80} // Collapsed Width
       >
         <div
           style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
             height: 64,
-            borderBottom: '1px solid #f0f0f0',
-            padding: '0 16px',
+            borderBottom: "1px solid #f0f0f0",
+            padding: "0 16px",
+            background: "#3fa3da",
           }}
         >
           <Button
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             onClick={() => setCollapsed(!collapsed)}
-            style={{
-              fontSize: '18px',
-              color: '#333',
-              background: '#e8e9eb'
-            }}
+            style={{ fontSize: "18px", color: "white" }}
           />
         </div>
 
-        {/* Menu */}
         <Menu
-          theme="light"
+          theme="dark"
           mode="inline"
-          defaultSelectedKeys={['1']}
+          defaultSelectedKeys={["1"]}
           items={menuItems.map((item, index) => ({
             key: item.toLowerCase(),
             icon: menuIcons[index],
             label: item,
             onClick: () => {
-              setHeaderContent(item)
-              setMainContent(item)
-            }
-
+              setHeaderContent(item);
+              setPageIndex(index);
+            },
           }))}
-          style={{
-            borderRight: 'none',
-            background: '#3fa3da'
-          }}
-         
+          style={{ background: "transparent", marginTop: "8px" }}
         />
       </Sider>
 
-      {/* Main Layout */}
-      <Layout>
-        <div className='container-fluid'>
-
-        <Header style={{ textAlign: 'center', padding: 0, background: colorBgContainer, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-          <h2>
-            {headerContent}
-          </h2>
-        </Header>
-        </div>
-        
-        <Content
+      <Layout style={{ marginLeft: collapsed ? 80 : 260, transition: "margin 0.3s ease" }}>
+        {/* Header */}
+        <Header
           style={{
-            margin: '24px 16px',
-            padding: 24,
-            minHeight: 280,
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
+            textAlign: "center",
+            padding: "16px 20px",
+            background: "white",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontSize: "22px",
+            fontWeight: "bold",
           }}
         >
-          {mainContent}
-        </Content>
+          {headerContent}
+        </Header>
 
-        <Footer style={{ textAlign: 'center' }}>
+        {/* Content Area */}
+        <Content
+          style={{
+            margin: "24px 16px",
+            padding: "24px",
+            minHeight: "calc(100vh - 160px)",
+            background: colorBgContainer,
+            borderRadius: borderRadiusLG,
+            overflow: "auto",
+          }}
+        >
+          {menuPages[pageIndex]}
+        </Content>
+      
+
+        {/* Footer */}
+        <Footer
+          style={{
+            textAlign: "center",
+            background: "#F3F4F6",
+            padding: "12px 20px",
+            fontSize: "14px",
+          }}
+        >
           {footerContent}
         </Footer>
       </Layout>
     </Layout>
   );
 };
-
 
 export default Dashboard;

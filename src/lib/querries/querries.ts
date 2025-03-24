@@ -1,5 +1,8 @@
 
-export const getCashierInfoQuery = "SELECT * FROM cashiers";
+export const getCashiers = "SELECT * FROM cashiers";
+
+
+// 
 
 
 export const getExistingCashierName = "SELECT * FROM cashiers WHERE name = ?";

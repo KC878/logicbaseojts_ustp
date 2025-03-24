@@ -12,11 +12,26 @@
 // import Dashboard from '../../../utils/WorkingComponents/Dashboard'
 
 import Dashboard from '../../../components/Dashboard';
-import { useState } from 'react';
+
+import CashiersPage from '../cashiers/page';
+
+import React, { useState } from 'react';
+
+
+
+
 
 const DashboardPage = () => {
   const [headerContent, setHeaderContent] = useState<string>('Dashboard'); // type string and default Dashboard
-  const [mainContent, setMainContent] = useState<string>('Content here'); // type string and dfeault content
+  
+  const menuPages = [
+    <CashiersPage />,
+    <h1> Dashboard</h1>,
+    <h1> Settings </h1>,
+    <h1> Logout </h1>
+  ]
+  
+  // pass Array of components
   const menuItems = [
     'Cashiers',
     'Dashboard',
@@ -32,13 +47,13 @@ const DashboardPage = () => {
   return(
     <Dashboard 
       menuItems={menuItems} 
-      footerContent={footerContent}
-
+      
       headerContent={headerContent}
       setHeaderContent={setHeaderContent}
 
-      mainContent={mainContent}
-      setMainContent={setMainContent}
+      menuPages={menuPages}
+
+      footerContent={footerContent}
     /> 
   );
 }

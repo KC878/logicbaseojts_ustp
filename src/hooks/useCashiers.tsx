@@ -9,7 +9,7 @@ const useCashiers = () => {
 
     const fetchCashiers = async () => {
       try {
-        const res = await fetch('/api/getCashierInfo');
+        const res = await fetch('/api/getCashiers');
         if (!res.ok) throw new Error('Failed to fetch cashiers');
 
         const data = await res.json();
