@@ -9,6 +9,9 @@ type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'
 interface Cashiers {
   name: string,
   shift: string,
+  startDate: Date,
+  endDate: Date,
+  isActive: Boolean
 }
 
 interface Columns {
@@ -37,6 +40,9 @@ const CashiersTable: React.FC<CashiersProps> = ( { cashiers, columns} ) => {
     key: index.toString(),
     name: cashier.name,
     shift: cashier.shift,
+    startDate: cashier.startDate,
+    endDate: cashier.endDate,
+    isActive: cashier.isActive
   }));
 
 

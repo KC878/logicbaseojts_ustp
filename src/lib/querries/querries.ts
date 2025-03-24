@@ -1,5 +1,5 @@
 
-export const getCashiers = "SELECT * FROM cashiers";
+export const getCashiers = "SELECT name, shift, startDate, endDate, isActive FROM cashiers";
 
 
 // 

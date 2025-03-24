@@ -1,24 +1,6 @@
 import React, { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space } from 'antd';
-
-// Props Options -- > Select Multiple tsx as component
-// -- > status prps - string[]
-
-
-// interface OptionsType { // used OptionType
-//   options: { label: string, value: string }[]
-// }
-
-
-// interface AddDrawerProps {
-//   selectMultipleComponent: React.ReactNode,
-//   status: string[] // parameter for Select 
-// }
-interface OptionType{
-  lable: string;
-  value: string;
-}
+import { Button, Drawer, Space } from 'antd';
 
 interface AddDrawerProps{
   children: React.ReactNode

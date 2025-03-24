@@ -19,9 +19,13 @@ const CashiersPage:  React.FC = () => {
   const { cashiers, loading } = useCashiers(); // properly type string
 
 
+  // cashier clumns
   const columns = [
     {title: 'Name', dataIndex: 'name'},
-    {title: 'Shift', dataIndex: 'shift'}
+    {title: 'Shift', dataIndex: 'shift'},
+    {title: 'Start-Date', dataIndex: 'startDate'},
+    {title: 'End-Date', dataIndex: 'endDate'},
+    {title: 'Status', dataIndex: 'isActive'}
   ]
   
   const shifts = [
@@ -55,14 +59,13 @@ const CashiersPage:  React.FC = () => {
             getPopupContainer={(trigger) => trigger.parentElement!}
           />
         </InputContainer>
+
         <InputContainer name='shift' label='Status' message='Please enter a status.' >
           < SelectSingle options={status}/>
         </InputContainer>
 
         
-        
-        
-         
+      
       </AddDrawer>
         
       <CashiersTable cashiers={cashiers} columns={columns} />
