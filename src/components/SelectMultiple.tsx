@@ -22,7 +22,7 @@ const SelectMultiple: React.FC<SelectMultipleProps> = ( { options } ) => {
       <Select
         mode="multiple"
         size='middle'
-        placeholder="Select Shift"
+        placeholder="Select Shift "
         defaultValue={null}
         onChange={handleChange}
         options={options}

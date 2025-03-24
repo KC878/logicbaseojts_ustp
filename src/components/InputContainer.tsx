@@ -21,18 +21,14 @@ const InputContainer: React.FC<ContainerProps> = ({
   return (
     <>
       <Form layout="vertical" hideRequiredMark>
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              name={name}
-              label={label}
-              rules={[{ required: true, message: message }]}
-            >
-              {children}
+        <Form.Item
+          name={name}
+          label={label}
+          rules={[{ required: true, message: message }]}
+        >
+          {children}
 
-            </Form.Item>
-          </Col>
-          </Row>
+        </Form.Item>
       </Form>
     </>
   );

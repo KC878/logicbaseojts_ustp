@@ -41,7 +41,7 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ children }) => {
       </Button>
       <Drawer
         title="Add Cashier"
-        width={720}
+        width='50%'
         onClose={onClose}
         open={open}
         styles={{

@@ -14,14 +14,13 @@ interface SelectProps {
   options: OptionType[]
 }
 const SelectSingle: React.FC<SelectProps> = ({ options }) => (
-  <Space wrap>
-    <Select
-      defaultValue={null}
-      style={{ width: 120 }}
-      allowClear
-      options={options}
-    />
-  </Space>
+  <Select
+    size='middle'
+    defaultValue={null}
+    style={{ width: 120 }}
+    allowClear
+    options={options}
+  />
 );
 
 export default SelectSingle;

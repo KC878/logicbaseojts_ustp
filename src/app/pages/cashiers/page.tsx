@@ -2,6 +2,9 @@
 
 
 import {Input, DatePicker} from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+
+
 
 import useCashiers from '@src/hooks/useCashiers'; // useHooks from now On to Get data
 
@@ -39,13 +42,26 @@ const CashiersPage:  React.FC = () => {
     <>
       <AddDrawer>
 
-        
-        <InputContainer name='shift' label='Status' message='Please enter a status.' >
-          < SelectSingle options={status}/>
+        <InputContainer name='name' label='Name' message='Please enter a name.' >
+          <Input size='middle' placeholder="Enter a name" prefix={<UserOutlined />} />
         </InputContainer>
         <InputContainer name='shift' label='Shift' message='Please select a shift.' >
           < SelectMultiple options={shifts} />
         </InputContainer>
+
+        <InputContainer name='date' label='Date' message='Select a date.' >
+          <DatePicker.RangePicker
+            style={{ width: '100%' }}
+            getPopupContainer={(trigger) => trigger.parentElement!}
+          />
+        </InputContainer>
+        <InputContainer name='shift' label='Status' message='Please enter a status.' >
+          < SelectSingle options={status}/>
+        </InputContainer>
+
+        
+        
+        
          
       </AddDrawer>
         
