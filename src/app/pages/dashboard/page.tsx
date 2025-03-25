@@ -21,12 +21,12 @@ import CashiersPage from '../cashiers/page';
 import React, { useState } from 'react';
 
 
-
+import { Spin } from 'antd';
 
 
 const DashboardPage = () => {
   const [headerContent, setHeaderContent] = useState<string>('Dashboard'); // type string and default Dashboard
-  
+  const [loading, setLoading] = useState(true);
   const menuPages = [
     <CashiersPage />,
     <h1> Dashboard</h1>,
@@ -43,11 +43,11 @@ const DashboardPage = () => {
   ]
  
   const footerContent = 'POS System - Cagadas USTP';
-
+  
 
   // useStates 
-  
   return(
+  
     <Dashboard 
       menuItems={menuItems} 
       

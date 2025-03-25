@@ -20,6 +20,7 @@ const SelectSingle: React.FC<SelectProps> = ({ options }) => (
     style={{ width: 120 }}
     allowClear
     options={options}
+    onClick={() => console.log('hello')}
   />
 );
 

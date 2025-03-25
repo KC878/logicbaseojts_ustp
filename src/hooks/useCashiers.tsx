@@ -13,6 +13,9 @@ const useCashiers = () => {
         if (!res.ok) throw new Error('Failed to fetch cashiers');
 
         const data = await res.json();
+
+
+        
         setCashiers(data);
 
       } catch (error) {

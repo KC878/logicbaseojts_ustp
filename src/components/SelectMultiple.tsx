@@ -1,6 +1,8 @@
 
-import { Select, Space } from 'antd';
 
+
+import { Select, Space } from 'antd';
+import { useAddCashier } from "@src/hooks/useAddCashier"
 
 interface OptionsType{
   label: string;
@@ -11,11 +13,19 @@ interface SelectMultipleProps {
   options: OptionsType[]
 }
 
-const handleChange = (value: string[]) => {
-  console.log(`Selected: ${value}`);
-};
+
 
 const SelectMultiple: React.FC<SelectMultipleProps> = ( { options } ) => {
+  const { selectedShifts, setSelectedShifts } = useAddCashier();
+
+  const handleChange = (value: string[]) => {
+
+    
+    setSelectedShifts(value);
+    console.log(`Selected: ${selectedShifts}`);
+  };
+
+  
 
   return (
     <>
