@@ -24,7 +24,8 @@ const useCashiers = () => {
 
     fetchCashiers();
   }, []);
-
+  
+  console.log(cashiers);
   return { cashiers, loading };
 };
 

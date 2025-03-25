@@ -32,7 +32,7 @@ INNER JOIN transactions ON cashiers.id = transactions.cashier_id;
 
 
 
-export const addCashierquery = "INSERT INTO cashiers (name, shift) VALUES (?, ?)";
+export const addCashierquery = "INSERT INTO cashiers (name, shift, startDate, endDate, isActive) VALUES (?, ?, ?, ?, ?)";
 
 
 

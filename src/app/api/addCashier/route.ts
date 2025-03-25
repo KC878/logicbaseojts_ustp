@@ -12,14 +12,6 @@ interface Cashier extends RowDataPacket {  // ✅ Extend RowDataPacket
   isActive: Boolean
 }
 
-// function formatDate(date: string): string | null {
-//   const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-  
-//   if (!dateRegex.test(date)) {
-//       console.error("Invalid date format. Use 'YYYY-MM-DD'.");
-//       return null;
-//   }
-// enforce type Date format -
 export async function POST(req: NextRequest) {
   try {
     // Parse request body
@@ -33,13 +25,25 @@ export async function POST(req: NextRequest) {
 
     const { name, shift, startDate, endDate, isActive } = body;
 
+    // convert to Date Objects
+    const formattedStartDate = new Date(startDate);
+    const formattedEndDate = new Date(endDate);
+    
+    console.log(formattedEndDate.getTime())
+
+    // // validate  Date Conversion 
+    // if (isNaN(formattedStartDate.getTime()) || isNaN(formattedEndDate.getTime())){
+    //   return NextResponse.json(
+    //     { error: "Invalid Date Format. Use 'YYYY-MM-DD'."},
+    //     { status: 400 }
+    //   );
+    // }
+
     // Validate required fields
     if (!name || !shift) {
       return NextResponse.json({ error: 'Both name and shift are required!' }, { status: 400 });
     }
 
-    
-   
     const [cashiers] = await db.query<Cashier[] & RowDataPacket[]>(getCashiers);
 
     if (!Array.isArray(cashiers)) {
@@ -56,7 +60,14 @@ export async function POST(req: NextRequest) {
     }
 
     // Insert new cashier into database
-    const [result] = await db.query(addCashierquery, [name, shift, startDate, endDate, isActive]);
+    const [result] = await db.query(addCashierquery, [
+      name, 
+      shift, 
+      formattedStartDate.toISOString().slice(0, 10), 
+      formattedEndDate.toISOString().slice(0, 10), 
+      isActive
+    
+    ]);
 
     return NextResponse.json({ message: "Cashier added successfully!", result }, { status: 201 });
 
