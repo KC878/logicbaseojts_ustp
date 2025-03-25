@@ -7,11 +7,12 @@ import type { TableProps } from 'antd';
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
 
 interface Cashiers {
+  key: string,
   name: string,
   shift: string,
   startDate: string,
   endDate: string, // this is rendering part 
-  isActive: Boolean
+  isActive: string
 }
 
 interface Columns {
@@ -39,10 +40,10 @@ const CashiersTable: React.FC<CashiersProps> = ( { cashiers, columns} ) => {
   const dataSource: Cashiers[] = cashiers.map((cashier, index) => ({
     key: index.toString(),
     name: cashier.name,
-    shift: cashier.shift,
+    shift: cashier.shift ,
     startDate: cashier.startDate.slice(0, 10),
     endDate: cashier.endDate.slice(0, 10),
-    isActive: cashier.isActive
+    isActive: (cashier.isActive ? 'Active' : 'In-active')
   }));
 
 
@@ -51,7 +52,6 @@ const CashiersTable: React.FC<CashiersProps> = ( { cashiers, columns} ) => {
     onChange: onSelectChange,
     selections: [
       Table.SELECTION_ALL,
-      Table.SELECTION_INVERT,
       Table.SELECTION_NONE,
       {
         key: 'odd',

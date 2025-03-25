@@ -4,13 +4,12 @@ import { Button, Drawer, Space } from 'antd';
 
 import { useAddCashier } from "@src/hooks/useAddCashier";
 interface AddDrawerProps{
-  cashierName: string;
   children: React.ReactNode
 }
-const AddDrawer: React.FC<AddDrawerProps> = ({ cashierName, children }) => {
+const AddDrawer: React.FC<AddDrawerProps> = ({ children }) => {
   const [open, setOpen] = useState(false);
 
-  const { selectedShifts } = useAddCashier();
+  const { selectedName, selectedShifts, selectedStatus, startDate, endDate  } = useAddCashier();
 
   const showDrawer = () => {
     setOpen(true);
@@ -21,7 +20,11 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ cashierName, children }) => {
   };
 
   const handleSubimt = () => {
-    alert(selectedShifts);
+    alert(`
+      ${selectedName}
+      ${selectedStatus} ${selectedShifts}
+      ${startDate} ${endDate}
+    ` );
     onClose();
   }
 

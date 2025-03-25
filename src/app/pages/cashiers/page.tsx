@@ -1,12 +1,13 @@
-'use client'
+'use client';
 
-
-import {Input, DatePicker} from 'antd';
+import { Input, DatePicker } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
-import useCashiers from '@src/hooks/useCashiers'; // useHooks from now On to Get data
+import useCashiers from '@src/hooks/useCashiers';
+import { useAddCashier } from '@src/hooks/useAddCashier';
+import dayjs from 'dayjs';
 
 import CashiersTable from '@src/components/CashiersTable';
 import AddDrawer from '@src/components/AddDrawer';
@@ -14,76 +15,78 @@ import SelectMultiple from '@src/components/SelectMultiple';
 import SelectSingle from '@src/components/SelectSingle';
 import InputContainer from '@src/components/InputContainer';
 
-
-
-
-const CashiersPage:  React.FC = () => {
-  const { cashiers, loading } = useCashiers(); // properly type string
-
-
-  const [name, setName] = useState('');
-  const [shift, setShift] = useState(''); 
-
-  // cashier clumns
-  const columns = [
-    {title: 'Name', dataIndex: 'name'},
-    {title: 'Shift', dataIndex: 'shift'},
-    {title: 'Start-Date', dataIndex: 'startDate'},
-    {title: 'End-Date', dataIndex: 'endDate'},
-    {title: 'Status', dataIndex: 'isActive'}
-  ]
+const CashiersPage: React.FC = () => {
+  const { cashiers } = useCashiers();
+  const { setSelectedName, setDates } = useAddCashier();
   
+  const [name, setName] = useState<string>(''); // Use useState for smooth input
+  const columns = [
+    { title: 'Name', dataIndex: 'name' },
+    { title: 'Shift', dataIndex: 'shift' },
+    { title: 'Start-Date', dataIndex: 'startDate' },
+    { title: 'End-Date', dataIndex: 'endDate' },
+    { title: 'Status', dataIndex: 'isActive' }
+  ];
+
   const shifts = [
     { label: 'AM', value: 'AM' },
     { label: 'MID', value: 'MID' },
     { label: 'PM', value: 'PM' }
-  ]
+  ];
 
   const status = [
     { label: 'Active', value: 'active' },
-    { label: 'Inactive', value: 'inactive'}
-  ]
+    { label: 'Inactive', value: 'inactive' }
+  ];
 
-  
-  return(
-    
-    // <compomenent a property={<pASSEDcompomenent props/>}
+  const handleDateChange = useCallback(
+    (dates: [dayjs.Dayjs | null, dayjs.Dayjs | null] | null) => {
+      if (dates && dates[0] && dates[1]) {
+        setDates(dates[0].format('YYYY-MM-DD'), dates[1].format('YYYY-MM-DD'));
+      }
+    },
+    [setDates]
+  );
+
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newName = event.target.value;
+    setName(newName);
+    setSelectedName(newName);
+  };
+
+  return (
     <>
-      <AddDrawer cashierName={name}>
-
-        <InputContainer name='name' label='Name' message='Please enter a name.' >
-          <Input 
-            size='middle' 
-            placeholder="Enter a name" 
-            prefix={<UserOutlined />} 
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+      <AddDrawer >
+        <InputContainer name="name" label="Name" message="Please enter a name.">
+          <Input
+            size="middle"
+            placeholder="Enter a name"
+            prefix={<UserOutlined />}
+            value={name}  // Controlled input
+            onChange={handleNameChange}
           />
         </InputContainer>
-        <InputContainer name='shift' label='Shift' message='Please select a shift.' >
-          < SelectMultiple options={shifts} />
+
+        <InputContainer name="shift" label="Shift" message="Please select a shift.">
+          <SelectMultiple options={shifts} />
         </InputContainer>
 
-        <InputContainer name='date' label='Date' message='Select a date.' >
+        <InputContainer name="date" label="Date" message="Select a date.">
           <DatePicker.RangePicker
             style={{ width: '100%' }}
             getPopupContainer={(trigger) => trigger.parentElement!}
+            onChange={handleDateChange}
           />
         </InputContainer>
 
-        <InputContainer name='shift' label='Status' message='Please enter a status.' >
-          < SelectSingle options={status}/>
+        <InputContainer name="status" label="Status" message="Please enter a status.">
+          <SelectSingle options={status} />
         </InputContainer>
-
-        
-      
       </AddDrawer>
-        
+
       <CashiersTable cashiers={cashiers} columns={columns} />
-
     </>
-
   );
-}
+};
 
 export default CashiersPage;

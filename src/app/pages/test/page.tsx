@@ -1,24 +1,22 @@
 'use client'
 
-import SelectMultiple from "@src/components/SelectMultiple";
+import { useRef } from "react";
 
-import useAddCashier from '@src/hooks/useAddCashier';
-const test = () => {
+const MyComponent = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const { selectedShift } = useAddCashier;
+  const handleSubmit = () => {
+    if (inputRef.current) {
+      alert(`Input Value: ${inputRef.current.value}`);
+    }
+  };
 
-  alert(selectedShift);
-  const shifts = [
-    { label: 'AM', value: 'AM' },
-    { label: 'MID', value: 'MID' },
-    { label: 'PM', value: 'PM' }
-  ]
-
-  
   return (
-    
-    <SelectMultiple options={shifts}/> 
+    <div>
+      <input type="text" ref={inputRef} />
+      <button onClick={handleSubmit}>Submit</button>
+    </div>
   );
-}
+};
 
-export default test;
+export default MyComponent;
