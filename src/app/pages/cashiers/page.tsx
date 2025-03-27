@@ -15,8 +15,6 @@ import SelectMultiple from '@src/components/SelectMultiple';
 import SelectSingle from '@src/components/SelectSingle';
 import InputContainer from '@src/components/InputContainer';
 
-import type { InputRef } from 'antd';
-
 const CashiersPage: React.FC = () => {
   const { cashiers } = useCashiers();
   const { startDate, endDate, selectedName, setSelectedName, setDates } = useAddCashier();
@@ -78,11 +76,13 @@ const CashiersPage: React.FC = () => {
           <InputContainer name="date" label="Date" message="Select a date.">
             <DatePicker.RangePicker
               prefix={<CalendarOutlined />}
-              style={{ width: '100%' }}
-              getPopupContainer={(trigger) => trigger.parentElement!}
+              style={{ width: "100%", minWidth: "250px", maxWidth: "100%" }} // Adapts to container
+              getPopupContainer={() => document.body} // Forces dropdown to be at the top level
               onChange={handleDateChange}
               allowClear
               value={[startDate ? dayjs(startDate) : null, endDate ? dayjs(endDate) : null]}
+              popupStyle={{ marginTop: 8, zIndex: 1050 }} // Ensures it's on top
+              popupClassName="custom-date-picker-dropdown"
             />
           </InputContainer>
 

@@ -111,14 +111,16 @@ const Dashboard: React.FC<DashboardProps> = ({
         {/* Header */}
         <Header
           style={{
-            textAlign: "center",
-            padding: "16px 20px",
+            display: "flex", 
+            alignItems: "center", 
+            justifyContent: "center", // Center horizontally
+            height: "64px", // Ensure full height usage
             background: "white",
             boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
             fontSize: "22px",
             fontWeight: "bold",
           }}
-        >
+        > 
           {headerContent}
         </Header>
 

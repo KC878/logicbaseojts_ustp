@@ -23,7 +23,7 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ children }) => {
   const onClose = () => {
     setSelectedName('');
     setSelectedShifts([]); // empty the shifts
-    setDates('', '')
+    setDates('', null)
     setSelectedStatus('');
 
     setOpen(false);
