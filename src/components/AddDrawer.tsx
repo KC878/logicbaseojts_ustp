@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, Space } from 'antd';
+import { Button, Drawer, Space, InputRef } from 'antd';
 
 import { useAddCashier } from "@src/hooks/useAddCashier";
 interface AddDrawerProps{
-  children: React.ReactNode
+  inputRef: React.RefObject<InputRef>;
+  children: React.ReactNode;
+
 }
-const AddDrawer: React.FC<AddDrawerProps> = ({ children }) => {
+const AddDrawer: React.FC<AddDrawerProps> = ({ inputRef, children }) => {
   const [open, setOpen] = useState(false);
 
-  const { selectedName, selectedShifts, selectedStatus, startDate, endDate  } = useAddCashier();
+  const { setSelectedName, selectedName, selectedShifts, selectedStatus, startDate, endDate  } = useAddCashier();
 
   const showDrawer = () => {
     setOpen(true);
@@ -19,14 +21,26 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ children }) => {
     setOpen(false);
   };
 
-  const handleSubimt = () => {
-    alert(`
-      ${selectedName}
-      ${selectedStatus} ${selectedShifts}
-      ${startDate} ${endDate}
-    ` );
+  const handleSubmit = () => {
+    // if (inputRef.current) {
+    //   const name = inputRef.current.input?.value || ""; // ✅ Safely get value
+      // alert(`
+      //   ${selectedName}
+      //   ${selectedStatus} ${selectedShifts}
+      //   ${startDate} ${endDate}
+      // `);
+    // }
+    // Testing the input 
+    // setSelectedName(inputRef.current.input?.value || "") // set name to this
+
+    const name = inputRef.current.input?.value || "";
+    setSelectedName(name); // set the name
+
+    // also pass reset for every input here
+
+    // api fetch for adding Input 
     onClose();
-  }
+  };
 
   return (
     <>
@@ -46,7 +60,7 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ children }) => {
         extra={
           <Space>
             <Button onClick={onClose}>Cancel</Button>
-            <Button onClick={handleSubimt} type="primary">
+            <Button onClick={handleSubmit} type="primary">
               Submit
             </Button>
           </Space>

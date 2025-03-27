@@ -24,39 +24,40 @@ export async function POST(req: NextRequest) {
     }
 
     const { name, shift, startDate, endDate, isActive } = body;
+    
+    const arrCashierInfo = [ name, shift, startDate, endDate, isActive];
 
+    const messageRequired = [
+      'Name is required',
+      'Shift it required',
+      'Start date is required',
+      'End date is required',
+      'Status is required'
+    ];
+
+    for(let index = 0; index < arrCashierInfo.length; index++) {
+      if (arrCashierInfo[index] === null || arrCashierInfo[index] === undefined) {
+        return NextResponse.json(
+          { error: messageRequired[index]},
+          { status: 400 }
+        )
+      }
+    }; // check empty fields
+
+    console.log(shift);
     // convert to Date Objects
+
     const formattedStartDate = new Date(startDate);
-    const formattedEndDate = new Date(endDate);
+    const formattedEndDate = new Date(endDate); // convert to date object
     
     console.log(formattedEndDate.getTime())
 
-    // // validate  Date Conversion 
-    // if (isNaN(formattedStartDate.getTime()) || isNaN(formattedEndDate.getTime())){
-    //   return NextResponse.json(
-    //     { error: "Invalid Date Format. Use 'YYYY-MM-DD'."},
-    //     { status: 400 }
-    //   );
-    // }
-
     // Validate required fields
-    if (!name || !shift) {
-      return NextResponse.json({ error: 'Both name and shift are required!' }, { status: 400 });
-    }
-
+    
     const [cashiers] = await db.query<Cashier[] & RowDataPacket[]>(getCashiers);
 
     if (!Array.isArray(cashiers)) {
       return NextResponse.json({ error: "Database error: Unable to fetch cashiers" }, { status: 500 });
-    }
-
-    // Check if the cashier name already exists
-    const existingCashier = cashiers.find(
-      (cashier) => cashier.name.toLowerCase().trim() === name.toLowerCase().trim()
-    );
-
-    if (existingCashier) {
-      return NextResponse.json({ error: 'Cashier name already exists!' }, { status: 409 });
     }
 
     // Insert new cashier into database

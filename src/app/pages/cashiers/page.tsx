@@ -3,7 +3,7 @@
 import { Input, DatePicker } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
-import { useState, useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 
 import useCashiers from '@src/hooks/useCashiers';
 import { useAddCashier } from '@src/hooks/useAddCashier';
@@ -15,11 +15,13 @@ import SelectMultiple from '@src/components/SelectMultiple';
 import SelectSingle from '@src/components/SelectSingle';
 import InputContainer from '@src/components/InputContainer';
 
+import type { InputRef } from 'antd';
+
 const CashiersPage: React.FC = () => {
   const { cashiers } = useCashiers();
-  const { setSelectedName, setDates } = useAddCashier();
+  const { setDates } = useAddCashier();
   
-  const [name, setName] = useState<string>(''); // Use useState for smooth input
+  
   const columns = [
     { title: 'Name', dataIndex: 'name' },
     { title: 'Shift', dataIndex: 'shift' },
@@ -48,22 +50,21 @@ const CashiersPage: React.FC = () => {
     [setDates]
   );
 
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newName = event.target.value;
-    setName(newName);
-    setSelectedName(newName);
-  };
+  // reference for name Input
+  const nameRef = useRef<InputRef>(null);
+  
 
   return (
     <>
-      <AddDrawer >
+      {/* Make sure passing Reference to avoid lagging in input */}
+      <AddDrawer inputRef={nameRef as React.RefObject<InputRef>}> 
         <InputContainer name="name" label="Name" message="Please enter a name.">
           <Input
             size="middle"
             placeholder="Enter a name"
             prefix={<UserOutlined />}
-            value={name}  // Controlled input
-            onChange={handleNameChange}
+            ref={nameRef}
+            
           />
         </InputContainer>
 
@@ -90,3 +91,5 @@ const CashiersPage: React.FC = () => {
 };
 
 export default CashiersPage;
+// Removed incorrect custom implementation of useRef
+
