@@ -3,7 +3,7 @@
 
 import { Select, Space } from 'antd';
 import { useAddCashier } from "@src/hooks/useAddCashier"
-
+import { SwapOutlined } from '@ant-design/icons';
 interface OptionsType{
   label: string;
   value: string;
@@ -30,6 +30,7 @@ const SelectMultiple: React.FC<SelectMultipleProps> = ( { options } ) => {
   return (
     <>
       <Select
+        prefix={<SwapOutlined />}
         mode="multiple"
         size='middle'
         placeholder="Select Shift "

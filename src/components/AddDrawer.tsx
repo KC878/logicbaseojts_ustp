@@ -5,15 +5,14 @@ import { Button, Drawer, Space, InputRef, message } from 'antd';
 import { useAddCashier } from "@src/hooks/useAddCashier";
 
 interface AddDrawerProps {
-  inputRef: React.RefObject<InputRef>;
   children: React.ReactNode;
 }
 
-const AddDrawer: React.FC<AddDrawerProps> = ({ inputRef, children }): React.ReactElement => {
+const AddDrawer: React.FC<AddDrawerProps> = ({ children }) => {
   const [open, setOpen] = useState(false);
 
-  const { selectedShifts, selectedStatus, startDate, endDate  } = useAddCashier();
-  const { setSelectedShifts, setSelectedStatus } = useAddCashier();
+  const { selectedName, selectedShifts, selectedStatus, startDate, endDate  } = useAddCashier();
+  const { setSelectedName, setSelectedShifts, setDates, setSelectedStatus } = useAddCashier();
 
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -22,13 +21,17 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ inputRef, children }): React.Reac
   };
 
   const onClose = () => {
+    setSelectedName('');
+    setSelectedShifts([]); // empty the shifts
+    setDates('', '')
+    setSelectedStatus('');
+
     setOpen(false);
   }; 
 
   const handleSubmit = async () => {
 
 
-    let name = inputRef.current.input?.value || "";
     const shift = selectedShifts; // store it in a variable // dunno why but it just works rather than store it as state variable
     let status;
     if(selectedStatus === 'active'){
@@ -37,7 +40,11 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ inputRef, children }): React.Reac
       status = false;
     } // handle status more efficiently next Time improve on that
 
+
+    const name = selectedName;
     // alert(`Name: ${name}, Shifts: ${selectedShifts}, Start Date: ${startDate}, End Date: ${endDate}, Status: ${selectedStatus}`)
+
+
     const res = await fetch('/api/addCashier', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -57,12 +64,10 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ inputRef, children }): React.Reac
     if(res.ok){
       messageApi.open({ type: 'success', content: data.message, });
       
-      if (inputRef.current?.input) {
-        inputRef.current.input.value = '';  
-      } // remove name input
-  
-      setSelectedShifts([]); // empty the shifts
-      setSelectedStatus('');
+      
+      
+      alert(selectedName);
+      
       onClose();
     } else{
       messageApi.open({ type: 'error', content: data.error, });
@@ -84,7 +89,7 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ inputRef, children }): React.Reac
       </Button>
       <Drawer
         title="Add Cashier"
-        width='50%'
+        width='30%'
         onClose={onClose}
         open={open}
         styles={{

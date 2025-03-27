@@ -5,7 +5,7 @@ import { Select, Space } from 'antd';
 import { useAddCashier } from "@src/hooks/useAddCashier";
 
 
-
+import { CheckCircleFilled  } from '@ant-design/icons';
 
 interface OptionType{
   label: string;
@@ -25,6 +25,7 @@ const SelectSingle: React.FC<SelectProps> = ({ options }) => {
 
   return (
     <Select
+      prefix={<CheckCircleFilled />}
       size='middle'
       defaultValue={null}
       style={{ width: 120 }}

@@ -1,7 +1,7 @@
 'use client';
 
 import { Input, DatePicker } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { UserOutlined, CalendarOutlined } from '@ant-design/icons';
 
 import { useCallback, useRef } from 'react';
 
@@ -19,7 +19,7 @@ import type { InputRef } from 'antd';
 
 const CashiersPage: React.FC = () => {
   const { cashiers } = useCashiers();
-  const { setDates } = useAddCashier();
+  const { startDate, endDate, selectedName, setSelectedName, setDates } = useAddCashier();
   
   
   const columns = [
@@ -51,41 +51,47 @@ const CashiersPage: React.FC = () => {
   );
 
   // reference for name Input
-  let nameRef = useRef<InputRef>(null);
-  
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
+    setSelectedName(e.target.value);
+  };
 
   return (
     <>
       {/* Make sure passing Reference to avoid lagging in input */}
-      <AddDrawer inputRef={nameRef as React.RefObject<InputRef>}> 
-        <InputContainer name="name" label="Name" message="Please enter a name.">
-          <Input
-            size="middle"
-            placeholder="Enter a name"
-            prefix={<UserOutlined />}
-            ref={nameRef}
-            allowClear
-            
-          />
-        </InputContainer>
+      <AddDrawer >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4"> 
+          <InputContainer name="name" label="Name" message="Please enter a name.">
+            <Input
+              size="middle"
+              placeholder="Enter a name"
+              prefix={<UserOutlined />}
+              value={selectedName}
+              allowClear
+              onBlur={handleBlur}
+            />
+          </InputContainer>
 
-        <InputContainer name="shift" label="Shift" message="Please select a shift.">
-          <SelectMultiple options={shifts}  />
-        </InputContainer>
+          <InputContainer name="shift" label="Shift" message="Please select a shift.">
+            <SelectMultiple options={shifts}  />
+          </InputContainer>
 
-        <InputContainer name="date" label="Date" message="Select a date.">
-          <DatePicker.RangePicker
-            style={{ width: '100%' }}
-            getPopupContainer={(trigger) => trigger.parentElement!}
-            onChange={handleDateChange}
-            allowClear
-            value={null}
-          />
-        </InputContainer>
+          <InputContainer name="date" label="Date" message="Select a date.">
+            <DatePicker.RangePicker
+              prefix={<CalendarOutlined />}
+              style={{ width: '100%' }}
+              getPopupContainer={(trigger) => trigger.parentElement!}
+              onChange={handleDateChange}
+              allowClear
+              value={[startDate ? dayjs(startDate) : null, endDate ? dayjs(endDate) : null]}
+            />
+          </InputContainer>
 
-        <InputContainer name="status" label="Status" message="Please enter a status.">
-          <SelectSingle options={status} />
-        </InputContainer>
+          <InputContainer name="status" label="Status" message="Please enter a status.">
+            <SelectSingle options={status} />
+          </InputContainer>
+          
+        </div>
+        
       </AddDrawer>
 
       <CashiersTable cashiers={cashiers} columns={columns} />
