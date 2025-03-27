@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, Space, InputRef } from 'antd';
+import { Button, Drawer, Space, InputRef, message } from 'antd';
 
 import { useAddCashier } from "@src/hooks/useAddCashier";
 
@@ -12,7 +12,8 @@ interface AddDrawerProps {
 const AddDrawer: React.FC<AddDrawerProps> = ({ inputRef, children }): React.ReactElement => {
   const [open, setOpen] = useState(false);
 
-  const { setSelectedName, selectedName, selectedShifts, selectedStatus, startDate, endDate  } = useAddCashier();
+  const { selectedShifts, selectedStatus, startDate, endDate  } = useAddCashier();
+  const [messageApi, contextHolder] = message.useMessage();
 
   const showDrawer = () => {
     setOpen(true);
@@ -21,9 +22,6 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ inputRef, children }): React.Reac
   const onClose = () => {
     setOpen(false);
   }; 
-
-
-  
 
   const handleSubmit = async () => {
 
@@ -35,14 +33,9 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ inputRef, children }): React.Reac
       status = true;
     }else{
       status = false;
-    }
-
-    
-
+    } // handle status more efficiently next Time improve on that
 
     // alert(`Name: ${name}, Shifts: ${selectedShifts}, Start Date: ${startDate}, End Date: ${endDate}, Status: ${selectedStatus}`)
-
-    alert(selectedShifts);
     const res = await fetch('/api/addCashier', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -53,8 +46,20 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ inputRef, children }): React.Reac
         endDate,
         status
       })
+      
     });
-    onClose();
+
+    const data = await res.json();
+
+
+    if(res.ok){
+      messageApi.open({ type: 'success', content: data.message, });
+      onClose();
+    } else{
+      messageApi.open({ type: 'error', content: data.error, });
+    } // this is how you handle errors now make it a modal receiver or something 
+
+  
   }
   
     
@@ -62,6 +67,7 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ inputRef, children }): React.Reac
 
   return (
     <>
+      {contextHolder}
       <Button type="primary" onClick={showDrawer} icon={<PlusOutlined />}>
         Add Cashier
       </Button>
