@@ -51,7 +51,7 @@ const CashiersPage: React.FC = () => {
   );
 
   // reference for name Input
-  const nameRef = useRef<InputRef>(null);
+  let nameRef = useRef<InputRef>(null);
   
 
   return (
@@ -64,12 +64,13 @@ const CashiersPage: React.FC = () => {
             placeholder="Enter a name"
             prefix={<UserOutlined />}
             ref={nameRef}
+            allowClear
             
           />
         </InputContainer>
 
         <InputContainer name="shift" label="Shift" message="Please select a shift.">
-          <SelectMultiple options={shifts} />
+          <SelectMultiple options={shifts}  />
         </InputContainer>
 
         <InputContainer name="date" label="Date" message="Select a date.">
@@ -77,6 +78,8 @@ const CashiersPage: React.FC = () => {
             style={{ width: '100%' }}
             getPopupContainer={(trigger) => trigger.parentElement!}
             onChange={handleDateChange}
+            allowClear
+            value={null}
           />
         </InputContainer>
 

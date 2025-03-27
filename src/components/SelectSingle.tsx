@@ -17,7 +17,7 @@ interface SelectProps {
 }
 const SelectSingle: React.FC<SelectProps> = ({ options }) => {
 
-  const { setSelectedStatus } = useAddCashier();
+  const { selectedStatus, setSelectedStatus } = useAddCashier();
 
   const handleChange = (value: string) => {
     setSelectedStatus(value);
@@ -30,6 +30,7 @@ const SelectSingle: React.FC<SelectProps> = ({ options }) => {
       style={{ width: 120 }}
       allowClear
       options={options}
+      value={selectedStatus}
       onChange={handleChange}
     />
   );

@@ -13,6 +13,8 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ inputRef, children }): React.Reac
   const [open, setOpen] = useState(false);
 
   const { selectedShifts, selectedStatus, startDate, endDate  } = useAddCashier();
+  const { setSelectedShifts, setSelectedStatus } = useAddCashier();
+
   const [messageApi, contextHolder] = message.useMessage();
 
   const showDrawer = () => {
@@ -26,7 +28,7 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ inputRef, children }): React.Reac
   const handleSubmit = async () => {
 
 
-    const name = inputRef.current.input?.value || "";
+    let name = inputRef.current.input?.value || "";
     const shift = selectedShifts; // store it in a variable // dunno why but it just works rather than store it as state variable
     let status;
     if(selectedStatus === 'active'){
@@ -54,13 +56,22 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ inputRef, children }): React.Reac
 
     if(res.ok){
       messageApi.open({ type: 'success', content: data.message, });
+      
+      if (inputRef.current?.input) {
+        inputRef.current.input.value = '';  
+      } // remove name input
+  
+      setSelectedShifts([]); // empty the shifts
+      setSelectedStatus('');
       onClose();
     } else{
       messageApi.open({ type: 'error', content: data.error, });
     } // this is how you handle errors now make it a modal receiver or something 
 
-  
+    
   }
+
+  
   
     
      

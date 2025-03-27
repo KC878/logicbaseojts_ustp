@@ -16,7 +16,7 @@ interface SelectMultipleProps {
 
 
 const SelectMultiple: React.FC<SelectMultipleProps> = ( { options } ) => {
-  const { selectedShifts, setSelectedShifts } = useAddCashier();
+  const { setDates, selectedShifts, setSelectedShifts } = useAddCashier();
 
   const handleChange = (value: string[]) => {
 
@@ -34,8 +34,10 @@ const SelectMultiple: React.FC<SelectMultipleProps> = ( { options } ) => {
         size='middle'
         placeholder="Select Shift "
         defaultValue={null}
+        value={selectedShifts} // control this here
         onChange={handleChange}
         options={options}
+        allowClear
       />
     </>
   );
