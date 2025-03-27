@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Drawer, Space, InputRef } from 'antd';
 
 import { useAddCashier } from "@src/hooks/useAddCashier";
-interface AddDrawerProps{
+
+interface AddDrawerProps {
   inputRef: React.RefObject<InputRef>;
   children: React.ReactNode;
-
 }
-const AddDrawer: React.FC<AddDrawerProps> = ({ inputRef, children }) => {
+
+const AddDrawer: React.FC<AddDrawerProps> = ({ inputRef, children }): React.ReactElement => {
   const [open, setOpen] = useState(false);
 
   const { setSelectedName, selectedName, selectedShifts, selectedStatus, startDate, endDate  } = useAddCashier();
@@ -19,28 +20,45 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ inputRef, children }) => {
 
   const onClose = () => {
     setOpen(false);
-  };
+  }; 
 
-  const handleSubmit = () => {
-    // if (inputRef.current) {
-    //   const name = inputRef.current.input?.value || ""; // ✅ Safely get value
-      // alert(`
-      //   ${selectedName}
-      //   ${selectedStatus} ${selectedShifts}
-      //   ${startDate} ${endDate}
-      // `);
-    // }
-    // Testing the input 
-    // setSelectedName(inputRef.current.input?.value || "") // set name to this
+
+  
+
+  const handleSubmit = async () => {
+
 
     const name = inputRef.current.input?.value || "";
-    setSelectedName(name); // set the name
+    const shift = selectedShifts; // store it in a variable // dunno why but it just works rather than store it as state variable
+    let status;
+    if(selectedStatus === 'active'){
+      status = true;
+    }else{
+      status = false;
+    }
 
-    // also pass reset for every input here
+    
 
-    // api fetch for adding Input 
+
+    // alert(`Name: ${name}, Shifts: ${selectedShifts}, Start Date: ${startDate}, End Date: ${endDate}, Status: ${selectedStatus}`)
+
+    alert(selectedShifts);
+    const res = await fetch('/api/addCashier', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name,
+        shift,
+        startDate,
+        endDate,
+        status
+      })
+    });
     onClose();
-  };
+  }
+  
+    
+     
 
   return (
     <>
