@@ -21,10 +21,7 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ children }) => {
   };
 
   const onClose = () => {
-    setSelectedName('');
-    setSelectedShifts([]); // empty the shifts
-    setDates('', null)
-    setSelectedStatus('');
+   
 
     setOpen(false);
   }; 
@@ -64,11 +61,16 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ children }) => {
     if(res.ok){
       messageApi.open({ type: 'success', content: data.message, });
       
-      alert(selectedName);
-      window.location.reload(); // reload
-
+      alert(selectedShifts);
+    
+      setSelectedName('');
+      setSelectedShifts([]); // empty the shifts
+      setDates('', null)
+      setSelectedStatus('');
       
       onClose();
+
+      window.location.reload(); // reload
     } else{
       messageApi.open({ type: 'error', content: data.error, });
     } // this is how you handle errors now make it a modal receiver or something 

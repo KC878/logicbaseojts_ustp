@@ -69,8 +69,9 @@ export async function POST(req: NextRequest) {
 
     // now parse shift Array as concatenated strings
 
+    shift.sort(); // sort array of strings alphabetically to have custom Display
     const shifts = shift.join(", ");
-
+    console.log('From API: ', shifts);
 
     const isActive = status ? 1 : 0; // convert the status to whether isActive status. 
     // Insert new cashier into database

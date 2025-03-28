@@ -1,15 +1,5 @@
 'use client'
 
-// import { HomeOutlined, SettingOutlined, UserOutlined} from '@ant-design/icons';
-// import CashiersPage from '../cashiers/page'
-// const menuItems = [
-//   { key: 'Cashiers', label: 'Cashiers', icon: <UserOutlined/ >, component: <CashiersPage /> },
-//   { key: 'Dashboard', label: 'Home', icon: <HomeOutlined />, component: <div > Welcome  Home! </div>},
-//   { key: 'Settings', label: 'Settings', icon: <SettingOutlined />, component: <div> Settings Page </div> }
-// ]
-
-
-// import Dashboard from '../../../utils/WorkingComponents/Dashboard'
 
 import Dashboard from '../../../components/Dashboard';
 
@@ -29,7 +19,7 @@ const DashboardPage = () => {
     <div key="settings"><h1 className='settings'>Settings</h1></div>,
     <div key="logout"><h1 className='logout'>Logout</h1></div>,
   ];
-  
+
   // pass Array of components
   const menuItems = [
     'Cashiers',

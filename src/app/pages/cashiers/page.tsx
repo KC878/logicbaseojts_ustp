@@ -3,7 +3,7 @@
 import { Input, DatePicker } from 'antd';
 import { UserOutlined, CalendarOutlined } from '@ant-design/icons';
 
-import { useCallback } from 'react';
+import { useCallback, useState} from 'react';
 
 import useCashiers from '@src/hooks/useCashiers';
 import { useAddCashier } from '@src/hooks/useAddCashier';
@@ -19,7 +19,8 @@ const CashiersPage: React.FC = () => {
   const { cashiers } = useCashiers();
   const { startDate, endDate, selectedName, setSelectedName, setDates } = useAddCashier();
   
-  
+  const [loading, setLoading] = useState();
+
   const columns = [
     { title: 'Name', dataIndex: 'name' },
     { title: 'Shift', dataIndex: 'shift' },
@@ -57,6 +58,7 @@ const CashiersPage: React.FC = () => {
   return (
     <>
       {/* Make sure passing Reference to avoid lagging in input */}
+    
       <AddDrawer >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4"> 
           <InputContainer name="name" label="Name" message="Please enter a name.">

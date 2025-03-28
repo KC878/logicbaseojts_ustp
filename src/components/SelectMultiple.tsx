@@ -16,7 +16,7 @@ interface SelectMultipleProps {
 
 
 const SelectMultiple: React.FC<SelectMultipleProps> = ( { options } ) => {
-  const { selectedShifts, setSelectedShifts } = useAddCashier();
+  const { selectedShifts, setSelectedShifts } = useAddCashier(); // for shifts
 
   const handleChange = (value: string[]) => {
 
