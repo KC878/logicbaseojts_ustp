@@ -64,9 +64,9 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ children }) => {
     if(res.ok){
       messageApi.open({ type: 'success', content: data.message, });
       
-      
-      
       alert(selectedName);
+      window.location.reload(); // reload
+
       
       onClose();
     } else{

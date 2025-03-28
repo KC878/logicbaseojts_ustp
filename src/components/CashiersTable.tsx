@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Table } from 'antd';
 import type { TableProps } from 'antd';
 
-
+import { useCashierPagination } from '@src/hooks/useCashierPagination';
 
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
 
@@ -30,6 +30,8 @@ interface CashiersProps {
 
 const CashiersTable: React.FC<CashiersProps> = ( { cashiers, columns} ) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+
+  const { userCurrent, setUserCurrent } = useCashierPagination();
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys);
@@ -84,7 +86,15 @@ const CashiersTable: React.FC<CashiersProps> = ( { cashiers, columns} ) => {
     ],
   };
 
-  return <Table<Cashiers> rowSelection={rowSelection} columns={columns} dataSource={dataSource} />;
+  return <Table<Cashiers> 
+    rowSelection={rowSelection} 
+    columns={columns} 
+    dataSource={dataSource}
+    pagination={{
+      current: userCurrent,
+      onChange: setUserCurrent
+    }}
+  />;
 };
 
 export default CashiersTable;
