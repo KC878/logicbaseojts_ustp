@@ -2,7 +2,7 @@ import { NextResponse, NextRequest } from 'next/server';
 import { RowDataPacket } from 'mysql2'; // ✅ Import RowDataPacket
 import db from '../../../lib/database/db'; 
 import { addCashierquery, getCashiers } from '../../../lib/querries/querries';
-import { start } from 'repl';
+
 
 // Define a TypeScript interface for Cashier
 interface Cashier extends RowDataPacket {  // ✅ Extend RowDataPacket
@@ -10,7 +10,7 @@ interface Cashier extends RowDataPacket {  // ✅ Extend RowDataPacket
   shift: string[];
   startDate: Date;
   endDate: Date;
-  isActive: Boolean
+  isActive: boolean;
 }
 
 export async function POST(req: NextRequest) {
@@ -69,8 +69,8 @@ export async function POST(req: NextRequest) {
 
     // now parse shift Array as concatenated strings
 
-    let shifts = shift.join(", ");
-    console.log(`This is the new shifts: ${shifts}`)
+    const shifts = shift.join(", ");
+
 
     const isActive = status ? 1 : 0; // convert the status to whether isActive status. 
     // Insert new cashier into database

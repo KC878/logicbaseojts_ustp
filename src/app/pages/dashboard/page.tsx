@@ -20,19 +20,15 @@ import CashiersPage from '../cashiers/page';
 
 import React, { useState } from 'react';
 
-
-import { Spin } from 'antd';
-
-
 const DashboardPage = () => {
   const [headerContent, setHeaderContent] = useState<string>('Dashboard'); // type string and default Dashboard
-  const [loading, setLoading] = useState(true);
+
   const menuPages = [
-    <CashiersPage />,
-    <h1> Dashboard</h1>,
-    <h1> Settings </h1>,
-    <h1> Logout </h1>
-  ]
+    <div key="cashiers"><CashiersPage /></div>,
+    <div key="dashboard"><h1 className='dashboard'>Dashboard</h1></div>,
+    <div key="settings"><h1 className='settings'>Settings</h1></div>,
+    <div key="logout"><h1 className='logout'>Logout</h1></div>,
+  ];
   
   // pass Array of components
   const menuItems = [

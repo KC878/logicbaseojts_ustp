@@ -3,7 +3,7 @@
 import { Input, DatePicker } from 'antd';
 import { UserOutlined, CalendarOutlined } from '@ant-design/icons';
 
-import { useCallback, useRef } from 'react';
+import { useCallback } from 'react';
 
 import useCashiers from '@src/hooks/useCashiers';
 import { useAddCashier } from '@src/hooks/useAddCashier';
@@ -51,6 +51,7 @@ const CashiersPage: React.FC = () => {
   // reference for name Input
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
     setSelectedName(e.target.value);
+
   };
 
   return (

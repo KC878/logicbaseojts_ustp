@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select, Space } from 'antd';
+import { Select } from 'antd';
 
 
 import { useAddCashier } from "@src/hooks/useAddCashier";
