@@ -53,7 +53,7 @@ const CashiersPage: React.FC = () => {
       render: (_, record) => (
         <> 
           <button onClick={() => handleEdit(record)}>Edit</button> 
-          <button onClick={() => handleEdit(record)}>Delete</button> 
+          <button onClick={() => handleEdit(record)}>Deactivate</button> 
         </>
 
         // this here is special something unique to javascript 
@@ -63,7 +63,21 @@ const CashiersPage: React.FC = () => {
   ];
 
   const handleEdit = (record: any) => {
-    alert(`Editing cashier: ${record.name}, Shift: ${record.shift}`);
+    alert(`
+      Editing cashier: ${record.name}, 
+      Shift: ${record.shift}
+      StartDate: ${record.startDate}
+      EndDate: ${record.endDate}
+      Status ${record.isActive}`);
+
+    // call Modal Edit here - 
+    // take advantage of the global data changer --
+    // decide whether to re use / re-reder addDrawer form or create another form for
+ 
+    <AddDrawer>
+      <AddDrawerForm />
+    </AddDrawer>
+
   };
   
 

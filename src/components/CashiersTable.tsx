@@ -90,15 +90,20 @@ const CashiersTable: React.FC<CashiersProps> = ( { cashiers, columns} ) => {
     ],
   };
 
-  return <Table<Cashiers> 
-    rowSelection={rowSelection} 
-    columns={columns} 
-    dataSource={dataSource}
-    pagination={{
-      current: userCurrent,
-      onChange: setUserCurrent // setUser Pagination so that when rendered it will persist on to that page
-    }}
-  />;
+  return (
+    <Table<Cashiers> 
+      rowSelection={rowSelection} 
+      columns={columns} 
+      dataSource={dataSource}
+      pagination={{
+        current: userCurrent,
+        onChange: setUserCurrent // setUser Pagination so that when rendered it will persist on to that page
+      }}
+    />
+
+  
+  );
+  
 };
 
 export default CashiersTable;
