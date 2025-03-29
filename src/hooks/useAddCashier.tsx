@@ -1,6 +1,11 @@
 import { create } from "zustand";
 
+
+
 interface GlobalState {
+  finishSubmit: boolean;
+  setFinishSubmit: (open: boolean) => void;
+
   showDrower: boolean;
   setShowDrower: (open: boolean) => void;
   
@@ -17,10 +22,13 @@ interface GlobalState {
   selectedStatus: string;
   setSelectedStatus: (status: string) => void;
 
-  handleSubmit: (messageApi: any) => Promise<void>;
+  handleSubmit: (messageApi: any, triggerRefresh: any) => Promise<void>;
 }
 
 export const useAddCashier = create<GlobalState>((set, get) => ({
+  finishSubmit: false,
+  setFinishSubmit: (open) => set({ finishSubmit: open }),
+
   showDrower: false,
   setShowDrower: (open) => set({ showDrower: open}),
 
@@ -37,13 +45,10 @@ export const useAddCashier = create<GlobalState>((set, get) => ({
   selectedStatus: '', 
   setSelectedStatus: (status) => set({ selectedStatus: status }),
 
-  // ✅ Fix: Accept `messageApi` from the component
-  handleSubmit: async (messageApi) => {
+  // Accept `messageApi` from the component
+  handleSubmit: async (messageApi, triggerRefresh) => {
     const { selectedName, selectedShifts, startDate, endDate, selectedStatus, setSelectedName, setSelectedShifts, setDates, setSelectedStatus } = get();
 
-
-
-    
     let status = selectedStatus === 'active';
 
     const res = await fetch('/api/addCashier', {
@@ -70,11 +75,14 @@ export const useAddCashier = create<GlobalState>((set, get) => ({
         Date: ${startDate} - ${endDate}
         Status: ${selectedStatus}
       `);
+
       // Reset fields
       setSelectedName("");
       setSelectedShifts([]);
       setDates("", null);
       setSelectedStatus("");
+
+      triggerRefresh();
     } else {
       messageApi.error(data.error);
     }

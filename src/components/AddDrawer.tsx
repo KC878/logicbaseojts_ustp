@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Drawer, Space, message } from 'antd';
+import { Button, Drawer } from 'antd';
 import { useAddCashier } from "@src/hooks/useAddCashier";
 
 interface AddDrawerProps {

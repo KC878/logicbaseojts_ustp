@@ -1,4 +1,4 @@
-import { Form, Input, Select, DatePicker, Space, Button, message } from 'antd';
+import { Form, Input, Select, DatePicker, Space, Button } from 'antd';
 import React from 'react';
 import { 
   UserOutlined, 
@@ -24,16 +24,15 @@ const status = [
 const AddDrawerForm = () => {
   const [form] = Form.useForm(); // Form instance
   // ✅ Move `message.useMessage()` here
-  const [messageApi, contextHolder] = message.useMessage();
-
+ 
   const { 
-    handleSubmit, 
+    setFinishSubmit,
     setSelectedName, 
     setSelectedShifts, 
     setDates, 
     setSelectedStatus, 
     setShowDrower,
-  
+    
     selectedName,
     selectedShifts,
     startDate,
@@ -57,10 +56,6 @@ const AddDrawerForm = () => {
       values.date ? values.date[1].format('YYYY-MM-DD') : ''
     );
     setSelectedStatus(values.isActive);
-
-
-
-
     // database submit
 
     alert(` Form
@@ -70,8 +65,9 @@ const AddDrawerForm = () => {
       Status: ${selectedStatus}
     `);
 
-    handleSubmit(messageApi);
-
+    
+    
+    setFinishSubmit(true); // setFinish submit global
     // Reset form fields
     form.resetFields();
 
@@ -81,7 +77,6 @@ const AddDrawerForm = () => {
     
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
 
-      {contextHolder}
       <Form form={form} layout="vertical" hideRequiredMark onFinish={handleFormSubmit}>
         
         {/* Name Field */}

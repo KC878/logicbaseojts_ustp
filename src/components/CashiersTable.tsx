@@ -92,7 +92,7 @@ const CashiersTable: React.FC<CashiersProps> = ( { cashiers, columns} ) => {
     dataSource={dataSource}
     pagination={{
       current: userCurrent,
-      onChange: setUserCurrent
+      onChange: setUserCurrent // setUser Pagination so that when rendered it will persist on to that page
     }}
   />;
 };
