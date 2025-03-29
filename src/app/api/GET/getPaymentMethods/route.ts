@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 
-import db from '../../../lib/database/db'; // Adjust import 
+import db from '../../../../lib/database/db'; // Adjust import 
 
 import { getPaymentMethods } from '@src/lib/querries/querries';
 

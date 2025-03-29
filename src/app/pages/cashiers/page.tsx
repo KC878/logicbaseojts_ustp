@@ -11,6 +11,7 @@ import { message } from 'antd';
 
 
 import { useAddCashier } from '@src/hooks/useAddCashier';
+import { JSX } from 'react/jsx-runtime';
 
 
 const CashiersPage: React.FC = () => {
@@ -20,13 +21,51 @@ const CashiersPage: React.FC = () => {
 
   const { setShowDrower, handleSubmit, finishSubmit, setFinishSubmit } = useAddCashier();
 
-  const columns = [
+  let i = 0;
+  interface Cashier {
+    name: string;
+    shift: string;
+    startDate: string;
+    endDate: string;
+    isActive: boolean;
+  }
+
+  interface Column {
+    title: string;
+    dataIndex: keyof Cashier | 'action';
+    key?: string;
+    render?: (_: any, record: Cashier) => JSX.Element;
+  }
+
+  const columns: Column[] = [
+    { title: 'No.', dataIndex: 'name' },
     { title: 'Name', dataIndex: 'name' },
     { title: 'Shift', dataIndex: 'shift' },
     { title: 'Start-Date', dataIndex: 'startDate' },
     { title: 'End-Date', dataIndex: 'endDate' },
-    { title: 'Status', dataIndex: 'isActive' }
+    { title: 'Status', dataIndex: 'isActive' },
+    
+    // study this entire part
+    { 
+      key: 'action',
+      title: 'Action', 
+      dataIndex: 'action', 
+      render: (_, record) => (
+        <> 
+          <button onClick={() => handleEdit(record)}>Edit</button> 
+          <button onClick={() => handleEdit(record)}>Delete</button> 
+        </>
+
+        // this here is special something unique to javascript 
+        
+      ) 
+    } // 
   ];
+
+  const handleEdit = (record: any) => {
+    alert(`Editing cashier: ${record.name}, Shift: ${record.shift}`);
+  };
+  
 
   useEffect(() => {
     

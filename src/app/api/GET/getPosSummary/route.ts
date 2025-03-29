@@ -1,10 +1,10 @@
 
 
 import { NextResponse } from 'next/server';
-import db from '../../../lib/database/db';
+import db from '../../../../lib/database/db';
 
 
-import { getPosSummary } from '../../../lib/querries/querries';
+import { getPosSummary } from '../../../../lib/querries/querries';
 
 
 export async function GET(){

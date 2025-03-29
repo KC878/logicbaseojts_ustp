@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { RowDataPacket } from 'mysql2'; // ✅ Import RowDataPacket
-import db from '../../../lib/database/db';
-import { addCashierquery, getCashiers } from '../../../lib/querries/querries';
+import db from '../../../../lib/database/db';
+import { addCashierquery, getCashiers } from '../../../../lib/querries/querries';
 
 // Define a TypeScript interface for Cashier
 interface Cashier extends RowDataPacket {

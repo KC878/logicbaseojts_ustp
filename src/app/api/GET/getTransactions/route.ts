@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import db from '../../../lib/database/db';
-import { getTransactions } from '../../../lib/querries/querries';
+import db from '../../../../lib/database/db';
+import { getTransactions } from '../../../../lib/querries/querries';
 
 export async function GET() {
   try {

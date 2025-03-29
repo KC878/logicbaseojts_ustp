@@ -51,7 +51,7 @@ export const useAddCashier = create<GlobalState>((set, get) => ({
 
     let status = selectedStatus === 'active';
 
-    const res = await fetch('/api/addCashier', {
+    const res = await fetch('/api/POST/addCashier', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

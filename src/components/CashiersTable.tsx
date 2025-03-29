@@ -8,6 +8,7 @@ type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'
 
 interface Cashiers {
   key: string,
+  no: string,
   name: string,
   shift: string,
   startDate: string,
@@ -41,13 +42,16 @@ const CashiersTable: React.FC<CashiersProps> = ( { cashiers, columns} ) => {
 
   const dataSource: Cashiers[] = cashiers.map((cashier, index) => ({
     key: index.toString(),
+    no: index + 1 + '. ', // start at 1
     name: cashier.name,
-    shift: cashier.shift ,
+    shift: cashier.shift,
     startDate: cashier.startDate.slice(0, 10),
     endDate: cashier.endDate.slice(0, 10),
     isActive: (cashier.isActive ? 'Active' : 'In-active')
   }));
 
+
+  console.log(dataSource);
 
   const rowSelection: TableRowSelection<Cashiers> = {
     selectedRowKeys,

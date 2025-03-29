@@ -15,7 +15,7 @@ const useCashiers = () => {
     const fetchCashiers = async () => {
       try {
         setLoading(true); // add loading state
-        const res = await fetch('/api/getCashiers');
+        const res = await fetch('/api/GET/getCashiers');
         if (!res.ok) throw new Error('Failed to fetch cashiers');
 
         const data = await res.json();
