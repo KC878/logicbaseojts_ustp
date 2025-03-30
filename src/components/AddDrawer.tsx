@@ -27,7 +27,7 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ drawerName, width, children  }) =
         {drawerName}
       </Button>
       <Drawer
-        title="Add Cashier"
+        title={drawerName}
         width={width}
         onClose={() => setShowDrower(false) }
         open={showDrower}

@@ -15,16 +15,16 @@ const DashboardPage = () => {
   const [headerContent, setHeaderContent] = useState<string>('Dashboard'); // type string and default Dashboard
 
   const menuPages = [
-    <div key="cashiers"><CashiersPage /></div>,
     <div key="dashboard"><TransactionsPage /></div>,
+    <div key="cashiers"><CashiersPage /></div>,
     <div key="settings"><h1 className='settings'>Settings</h1></div>,
     <div key="logout"><h1 className='logout'>Logout</h1></div>,
   ];
 
   // pass Array of components
   const menuItems = [
-    'Cashiers',
     'Dashboard',
+    'Cashiers',
     'Settings',
     'Logout'
   ]

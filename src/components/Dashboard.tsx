@@ -24,8 +24,8 @@ interface DashboardProps {
 
 
 const menuIcons = [
-  <UserOutlined key={"cashiers"} />,
   <DashboardOutlined key={"dashboard"} />,
+  <UserOutlined key={"cashiers"} />,
   <SettingOutlined key={"settings"} />,
   <LogoutOutlined key={"logout"} />,
 ];
