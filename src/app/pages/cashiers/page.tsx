@@ -70,14 +70,6 @@ const CashiersPage: React.FC = () => {
       EndDate: ${record.endDate}
       Status ${record.isActive}`);
 
-    // call Modal Edit here - 
-    // take advantage of the global data changer --
-    // decide whether to re use / re-reder addDrawer form or create another form for
- 
-    <AddDrawer>
-      <AddDrawerForm />
-    </AddDrawer>
-
   };
   
 
@@ -94,7 +86,7 @@ const CashiersPage: React.FC = () => {
   return (
     <>
       {contextHolder}
-      <AddDrawer>
+      <AddDrawer drawerName='Add Cashier' width='30%'>
         <AddDrawerForm />
       </AddDrawer>
 

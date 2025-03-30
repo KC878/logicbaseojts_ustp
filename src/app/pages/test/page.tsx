@@ -1,122 +1,106 @@
-
 'use client'
 
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import type { GetRef, InputRef, TableProps } from 'antd';
-import { Button, Form, Input, Popconfirm, Table } from 'antd';
 
-interface DataType {
+import React, { useState } from 'react';
+import { Table } from 'antd';
+import type { TableProps } from 'antd';
+
+import { useCashierPagination } from '@src/hooks/useCashierPagination';
+
+
+
+
+interface Employee {
+  name: string;
+  salary: number;
+}
+
+interface Manager {
+  department: string;
+}
+
+type EmployeeManager = Employee & Manager;
+
+let manager: EmployeeManager = {
+  name: "Alice",
+  salary: 50000,
+  department: "HR",
+}; // ill be using this, a combination 
+
+
+
+// props 
+interface TransactionsType {
   key: string;
   particulars: string;
-  am: string | number;
-  mid: string | number;
-  pm: string | number;
-  grossTotal: number;
-  netTotal: number;
+  // am: string | number;
+  // mid: string | number;
+  // pm: string | number;
+  // grossTotal: number;
+  // netTotal: number;
+}
+
+interface Columns {
+  title: string,
+  dataIndex: string,
 }
 
 
-type ColumnTypes = Exclude<TableProps<DataType>['columns'], undefined>;
+const columns: Columns[] = [
+  { title: 'PARTICULARS', dataIndex: 'particulars' },
+  { title: 'AM', dataIndex: 'am' },
+  { title: 'MID', dataIndex: 'mid' },
+  { title: 'PM', dataIndex: 'pm' },
+  { title: 'GROSS TOTAL', dataIndex: 'grossTotal' },
+  { title: 'NET TOTAL', dataIndex: 'netTotal' }, 
+];
 
-const App: React.FC = () => {
-  const [dataSource, setDataSource] = useState<DataType[]>([
-    {
-      key: '0',
-      name: 'Edward King 0',
-      age: '32',
-      address: 'London, Park Lane no. 0',
-    },
-    {
-      key: '1',
-      name: 'Edward King 1',
-      age: '32',
-      address: 'London, Park Lane no. 1',
-    },
-  ]);
 
-  const [count, setCount] = useState(2);
+const transactions: TransactionsType[] = [
+  { key: "1", particulars: "CASH"}, //{can you insert some code here like to loop throught? througout the rows? }
+  { key: "2", particulars: "BPI CREDIT CARD"},
+  { key: "3", particulars: "PAY MAYA"},
+  { key: "4", particulars: "GCASH"},
+  { key: "5", particulars: "FOOD PANDA"},
+  { key: "6", particulars: "STREETBY"},
+  { key: "7", particulars: "GRAB FOOD"},
+  { key: "8", particulars: "SUB TOTAL TRADE POS"},
+  
+];
 
-  const handleDelete = (key: React.Key) => {
-    const newData = dataSource.filter((item) => item.key !== key);
-    setDataSource(newData);
-  };
+const TransacionsTable: React.FC<TransactionsType> = () => {
+  // const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
-  const defaultColumns: (ColumnTypes[number] & { editable?: boolean; dataIndex: string })[] = [
-    {
-      title: 'name',
-      dataIndex: 'name',
-      width: '30%',
-      editable: true,
-    },
-    {
-      title: 'age',
-      dataIndex: 'age',
-    },
-    {
-      title: 'address',
-      dataIndex: 'address',
-    },
-  ];
+  // const { userCurrent, setUserCurrent } = useCashierPagination();
 
-  const handleAdd = () => {
-    const newData: DataType = {
-      key: count,
-      name: `Edward King ${count}`,
-      age: '32',
-      address: `London, Park Lane no. ${count}`,
-    };
-    setDataSource([...dataSource, newData]);
-    setCount(count + 1);
-  };
+  // const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+  //   console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+  //   setSelectedRowKeys(newSelectedRowKeys);
+  // };
 
-  const handleSave = (row: DataType) => {
-    const newData = [...dataSource];
-    const index = newData.findIndex((item) => row.key === item.key);
-    const item = newData[index];
-    newData.splice(index, 1, {
-      ...item,
-      ...row,
-    });
-    setDataSource(newData);
-  };
 
-  const components = {
-    body: {
-      row: EditableRow,
-      cell: EditableCell,
-    },
-  };
+  // const dataSource: TransactionsType[] = transactions.map((item, index) => ({
+  //   key: index.toString(),
+  // }));
 
-  const columns = defaultColumns.map((col) => {
-    if (!col.editable) {
-      return col;
-    }
-    return {
-      ...col,
-      onCell: (record: DataType) => ({
-        record,
-        editable: col.editable,
-        dataIndex: col.dataIndex,
-        title: col.title,
-        handleSave,
-      }),
-    };
-  });
+
+  // console.log(dataSource);
 
   return (
-    <div>
-      <Button onClick={handleAdd} type="primary" style={{ marginBottom: 16 }}>
-        Add a row
-      </Button>
-      <Table<DataType>
-        components={components}
-        // rowClassName={() => 'editable-row'}
-        bordered
-        dataSource={dataSource}
-        columns={columns as ColumnTypes}
-      />
-    </div>
+    <Table
+      // ssrowSelection={rowSelection} 
+      columns={columns} 
+      dataSource={transactions}
+      bordered
+      // pagination={{
+      //   current: userCurrent,
+      //   onChange: setUserCurrent // setUser Pagination so that when rendered it will persist on to that page
+      // }}
+    />
+
+  
   );
+  
 };
 
-export default App;
+export default TransacionsTable;
