@@ -1,5 +1,5 @@
 
-
+'use client'
 import useCashiers from '@src/hooks/useCashiers';
 
 import CashiersTable from '@src/components/CashiersTable';
@@ -21,8 +21,9 @@ const CashiersPage: React.FC = () => {
 
   const { setShowDrower, handleSubmit, finishSubmit, setFinishSubmit } = useAddCashier();
 
-  let i = 0;
+
   interface Cashier {
+    no: string;
     name: string;
     shift: string;
     startDate: string;
@@ -38,7 +39,7 @@ const CashiersPage: React.FC = () => {
   }
 
   const columns: Column[] = [
-    { title: 'No.', dataIndex: 'name' },
+    { title: 'No.', dataIndex: 'no' },
     { title: 'Name', dataIndex: 'name' },
     { title: 'Shift', dataIndex: 'shift' },
     { title: 'Start-Date', dataIndex: 'startDate' },

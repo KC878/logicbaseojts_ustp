@@ -7,7 +7,6 @@ import { useCashierPagination } from '@src/hooks/useCashierPagination';
 type TableRowSelection<T extends object = object> = TableProps<T>['rowSelection'];
 
 interface Cashiers {
-  key: string,
   no: string,
   name: string,
   shift: string,
