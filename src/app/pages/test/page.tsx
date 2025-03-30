@@ -1,106 +1,72 @@
-'use client'
+import React from "react";
+import { Table } from "antd";
+import type { ColumnsType } from "antd/es/table";
 
-
-import React, { useState } from 'react';
-import { Table } from 'antd';
-import type { TableProps } from 'antd';
-
-import { useCashierPagination } from '@src/hooks/useCashierPagination';
-
-
-
-
-interface Employee {
-  name: string;
-  salary: number;
-}
-
-interface Manager {
-  department: string;
-}
-
-type EmployeeManager = Employee & Manager;
-
-let manager: EmployeeManager = {
-  name: "Alice",
-  salary: 50000,
-  department: "HR",
-}; // ill be using this, a combination 
-
-
-
-// props 
+// Define the data structure
 interface TransactionsType {
   key: string;
   particulars: string;
-  // am: string | number;
-  // mid: string | number;
-  // pm: string | number;
-  // grossTotal: number;
-  // netTotal: number;
+  am?: number;
+  mid?: number;
+  pm?: number;
+  grossTotal?: number;
+  netTotal?: number;
 }
 
-interface Columns {
-  title: string,
-  dataIndex: string,
-}
-
-
-const columns: Columns[] = [
-  { title: 'PARTICULARS', dataIndex: 'particulars' },
-  { title: 'AM', dataIndex: 'am' },
-  { title: 'MID', dataIndex: 'mid' },
-  { title: 'PM', dataIndex: 'pm' },
-  { title: 'GROSS TOTAL', dataIndex: 'grossTotal' },
-  { title: 'NET TOTAL', dataIndex: 'netTotal' }, 
+// Define column headers dynamically
+const columnTitles = [
+  { title: "PARTICULARS", dataIndex: "particulars", fixed: "left", width: 200 },
+  { title: "AM", dataIndex: "am" },
+  { title: "MID", dataIndex: "mid" },
+  { title: "PM", dataIndex: "pm" },
+  { title: "GROSS TOTAL", dataIndex: "grossTotal", fixed: "right" },
+  { title: "NET TOTAL", dataIndex: "netTotal", fixed: "right" },
 ];
 
+// Generate columns dynamically
+const columns: ColumnsType<TransactionsType> = columnTitles.map((col) => ({
+  title: col.title,
+  dataIndex: col.dataIndex,
+  key: col.dataIndex,
+  fixed: col.fixed,
+  width: col.width || 150,
+  align: typeof col.fixed === "undefined" ? "right" : "left",
+}));
 
-const transactions: TransactionsType[] = [
-  { key: "1", particulars: "CASH"}, //{can you insert some code here like to loop throught? througout the rows? }
-  { key: "2", particulars: "BPI CREDIT CARD"},
-  { key: "3", particulars: "PAY MAYA"},
-  { key: "4", particulars: "GCASH"},
-  { key: "5", particulars: "FOOD PANDA"},
-  { key: "6", particulars: "STREETBY"},
-  { key: "7", particulars: "GRAB FOOD"},
-  { key: "8", particulars: "SUB TOTAL TRADE POS"},
-  
+// Base transaction rows (PARTICULARS is immutable)
+const baseTransactions: TransactionsType[] = [
+  { key: "1", particulars: "CASH" },
+  { key: "2", particulars: "BPI CREDIT CARD" },
+  { key: "3", particulars: "PAY MAYA" },
+  { key: "4", particulars: "GCASH" },
+  { key: "5", particulars: "FOOD PANDA" },
+  { key: "6", particulars: "STREETBY" },
+  { key: "7", particulars: "GRAB FOOD" },
+  { key: "8", particulars: "SUB TOTAL TRADE POS" },
 ];
 
-const TransacionsTable: React.FC<TransactionsType> = () => {
-  // const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+// Loop through baseTransactions and add random transaction values
+const transactions: TransactionsType[] = baseTransactions.map((row) => ({
+  ...row,
+  am: Math.random() > 0.5 ? Math.floor(Math.random() * 50000) : undefined,
+  mid: Math.random() > 0.5 ? Math.floor(Math.random() * 5000) : undefined,
+  pm: Math.random() > 0.5 ? Math.floor(Math.random() * 30000) : undefined,
+  grossTotal: Math.floor(Math.random() * 100000),
+  netTotal: Math.floor(Math.random() * 95000),
+}));
 
-  // const { userCurrent, setUserCurrent } = useCashierPagination();
-
-  // const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-  //   console.log('selectedRowKeys changed: ', newSelectedRowKeys);
-  //   setSelectedRowKeys(newSelectedRowKeys);
-  // };
-
-
-  // const dataSource: TransactionsType[] = transactions.map((item, index) => ({
-  //   key: index.toString(),
-  // }));
-
-
-  // console.log(dataSource);
-
+const CashierTable: React.FC = () => {
   return (
     <Table
-      // ssrowSelection={rowSelection} 
-      columns={columns} 
+      columns={columns}
       dataSource={transactions}
       bordered
-      // pagination={{
-      //   current: userCurrent,
-      //   onChange: setUserCurrent // setUser Pagination so that when rendered it will persist on to that page
-      // }}
+      pagination={false}
+      scroll={{ x: "max-content" }}
     />
-
-  
   );
-  
 };
 
-export default TransacionsTable;
+export default CashierTable;
+
+// immutable table

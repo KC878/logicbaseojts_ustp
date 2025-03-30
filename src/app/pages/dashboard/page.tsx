@@ -7,6 +7,7 @@ import Dashboard from '../../../components/Dashboard';
 
 // importing pages
 import CashiersPage from '../cashiers/page';
+import TransactionsPage from '../transactions/page';
 
 import React, { useState } from 'react';
 
@@ -15,7 +16,7 @@ const DashboardPage = () => {
 
   const menuPages = [
     <div key="cashiers"><CashiersPage /></div>,
-    <div key="dashboard"><h1 className='dashboard'>Dashboard</h1></div>,
+    <div key="dashboard"><TransactionsPage /></div>,
     <div key="settings"><h1 className='settings'>Settings</h1></div>,
     <div key="logout"><h1 className='logout'>Logout</h1></div>,
   ];
