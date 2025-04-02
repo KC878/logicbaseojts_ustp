@@ -23,6 +23,7 @@ CREATE TABLE payment_methods (
     paymentID INT AUTO_INCREMENT PRIMARY KEY,
     paymentType VARCHAR(50) UNIQUE NOT NULL
 );
+-- make payment Id a varchar instead 
 
 CREATE TABLE pos_summary (
     id INT AUTO_INCREMENT PRIMARY KEY,

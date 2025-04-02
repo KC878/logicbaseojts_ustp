@@ -16,10 +16,29 @@ const shifts = [
   { label: 'PM', value: 'PM' }
 ];
 
-const status = [
-  { label: 'Active', value: 'active' },
-  { label: 'Inactive', value: 'inactive' }
+const paymentMethod = [
+  { label: "CASH", value: "cash" },
+  { label: "CHECK", value: "check" },
+  { label: "BPI CREDIT CARD", value: "bpi_credit_card" },
+  { label: "BPI DEBIT CARD", value: "bpi_debit_card" },
+  { label: "METRO CREDIT CARD", value: "metro_credit_card" },
+  { label: "METRO DEBIT CARD", value: "metro_debit_card" },
+  { label: "PAY MAYA", value: "pay_maya" },
+  { label: "AUB CREDIT CARD", value: "aub_credit_card" },
+  { label: "GCASH", value: "gcash" },
+  { label: "FOOD PANDA", value: "food_panda" },
+  { label: "STREETBY", value: "streetby" },
+  { label: "GRAB FOOD", value: "grab_food" },
+  { label: "GC CLAIMED (OTHERS)", value: "gc_claimed_others" },
+  { label: "GC CLAIMED (OWN)", value: "gc_claimed_own" },
+  { label: "A/R ______________", value: "a_r_1" },
+  { label: "A/R ______________", value: "a_r_2" },
+  { label: "SUB TOTAL TRADE POS", value: "sub_total_trade_pos" }
 ];
+
+
+
+
 
 
 const curency = [
@@ -115,9 +134,9 @@ const TransactionForm = () => {
             // prefix={<CheckCircleFilled />}
             size="middle"
             
-            style={{ width: 120 }}
+            style={{ width: 200 }}
             allowClear
-            options={status}
+            options={paymentMethod}
           />
         </Form.Item>
 
