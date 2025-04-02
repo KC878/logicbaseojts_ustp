@@ -5,7 +5,7 @@
 import TransactionsTable from "@src/components/TransactionsTable";
 
 import AddDrawer from "@src/components/AddDrawer";
-
+import TransactionForm from "@src/components/TransactionForm";
 const TransactionsPage = () => {
 
 
@@ -13,7 +13,7 @@ const TransactionsPage = () => {
 
     <>
       <AddDrawer drawerName='Add Transactions' width='30%'>
-      {'Form Component Here'}
+        <TransactionForm />
       </AddDrawer>
       <TransactionsTable /> 
     </>

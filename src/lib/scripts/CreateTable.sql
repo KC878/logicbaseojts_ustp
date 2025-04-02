@@ -8,6 +8,8 @@ DROP TABLE IF EXISTS pos_summary;
 DROP TABLE IF EXISTS payment_methods;
 DROP TABLE IF EXISTS cashiers;
 
+-- Create Role Based Table next
+-- Create Transaction Table something that screams OVERALL 
 CREATE TABLE cashiers (
     cashierID INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
