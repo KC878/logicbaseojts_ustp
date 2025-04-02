@@ -1,4 +1,3 @@
-'use client'
 
 import React, { useState, useEffect } from "react";
 import { Typography, Space } from "antd";
@@ -33,8 +32,9 @@ const Clock = () => {
   });
 
   return (
-    <Space direction="vertical" size="middle">
+    <Space direction="horizontal" size="middle">
       <Text style={{ fontSize: "24px", fontWeight: "bold" }}>
+        | | 
         {formattedTime}
       </Text>
       <Text style={{ fontSize: "18px" }}>

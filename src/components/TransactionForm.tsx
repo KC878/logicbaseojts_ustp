@@ -81,6 +81,13 @@ const TransactionForm = () => {
     
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
 
+      <> 
+      clock here
+      ________________________________________
+      </>
+      
+      <h1> include Crucial Cashier info </h1>
+      <h1> opiton: make date available </h1>
       <Form form={form} layout="vertical" hideRequiredMark onFinish={handleFormSubmit}>
         
         {/* Name Field */}
@@ -169,6 +176,9 @@ const TransactionForm = () => {
           
         </Space>
       </Form>
+
+      <h1> Something Represent Gross Total //  </h1> 
+      <h1> Net Total or Something  </h1> 
     </div>
   );
 };

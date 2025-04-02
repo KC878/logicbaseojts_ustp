@@ -8,7 +8,7 @@ import {
   LogoutOutlined,
 } from "@ant-design/icons";
 import { Button, Layout, Menu, theme } from "antd";
-
+import Clock from '@src/components/Clock'
 const { Header, Footer, Sider, Content } = Layout;
 
 // Props Interface
@@ -149,6 +149,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           }}
         >
           {footerContent}
+          <Clock />
         </Footer>
       </Layout>
     </Layout>
