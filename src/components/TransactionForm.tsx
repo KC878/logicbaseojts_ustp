@@ -1,3 +1,4 @@
+
 import { Form, Input, InputNumber, Select, DatePicker, Space, Button } from 'antd';
 import React from 'react';
 import { 
@@ -18,8 +19,12 @@ import type { StatisticProps } from 'antd';
 import { Col, Row, Statistic } from 'antd';
 import CountUp from 'react-countup';
 
-
 import { formattedDate } from '@src/utils/Date';
+
+import { useCashiersName } from '@src/hooks/useCashiersName';
+import { getCashiersName } from '@src/services/getCashiersName';
+
+import { useEffect } from 'react';
 
 const formatter: StatisticProps['formatter'] = (value) => (
   <CountUp end={value as number} separator="," />
@@ -46,9 +51,10 @@ const paymentMethod = [
 ];
 
 
-const arrayCashierName = [
-  { label: 'CashierName corresponds to a certain name', value: 'nameof cashier' },
-]
+
+
+
+
 // re edit that later
 
 
@@ -56,8 +62,11 @@ const currency = [
   { label: 'Philippines', value: 'Philippines'},
   { label: 'USA', value: 'USA'}
 ]
-const TransactionForm = () => {
+const TransactionForm: React.FC = () => {
   const [form] = Form.useForm(); // Form instance
+
+  const { cashiersName } = getCashiersName(); // has already defined value 
+
   // ✅ Move `message.useMessage()` here
  
   const { 
@@ -102,17 +111,37 @@ const TransactionForm = () => {
 
     
     
+
     setFinishSubmit(true); // setFinish submit global
     // Reset form fields
     form.resetFields();
 
   };
-  
+
   const transactionID = 0;
+
+  // will run onto how to connect this when selecting a specific cashier and transaction date
+
+  // solve only display is active cashiers
+
+  // assign global name for cashier contemplate if is it necessary
+  const optionsNames = cashiersName.map((cashier, index) => ({
+    key: `${index + 1}`,  
+    label: `${index + 1}. ${cashier.name}`,  
+    value: cashier.name,  
+  }));
+  
+   // call this function to process the service
+  
+
+
   return (
     
+    
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+      
 
+      <h1> </h1>
       <div style={{ display: 'flex', flexDirection: 'column', width: '100%', marginBottom: '20px' }}>
         <h1 style={{ fontSize: '15px', fontWeight: 600, color: '#333' }}>Transaction ID: </h1>
         <h1 style={{ fontSize: '15px', fontWeight: 600, color: '#333' }}>Date: {formattedDate}</h1>
@@ -139,7 +168,7 @@ const TransactionForm = () => {
             prefix={<SwapOutlined />}
             size="middle"
             placeholder="Select Shift"
-            options={arrayCashierName}
+            options={optionsNames}
             style={{ width: 250 }}
             allowClear
           />
@@ -197,7 +226,8 @@ const TransactionForm = () => {
           {/* how about htis / make the selection a currency from country */}
           <InputNumber<number>
             defaultValue={1000}
-            formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            min={0}
+            formatter={(value) => `₱ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
             parser={(value) => value?.replace(/\$\s?|(,*)/g, '') as unknown as number}
             style={{ width: 160}}
             // onChange={onChange}
