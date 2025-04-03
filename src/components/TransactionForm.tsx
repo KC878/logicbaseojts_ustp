@@ -1,15 +1,29 @@
 import { Form, Input, InputNumber, Select, DatePicker, Space, Button } from 'antd';
 import React from 'react';
 import { 
-  UserOutlined, 
+  UserOutlined,
+  DollarOutlined, 
   CalendarOutlined, 
   SwapOutlined,
+  WalletOutlined,
+  PayCircleOutlined,
   CheckCircleFilled,
+  CreditCardOutlined,
 } from '@ant-design/icons';
 
 import { useAddCashier } from '@src/hooks/useAddCashier';
 import dayjs from 'dayjs';
 
+import type { StatisticProps } from 'antd';
+import { Col, Row, Statistic } from 'antd';
+import CountUp from 'react-countup';
+
+
+import { formattedDate } from '@src/utils/Date';
+
+const formatter: StatisticProps['formatter'] = (value) => (
+  <CountUp end={value as number} separator="," />
+);
 const shifts = [
   { label: 'AM', value: 'AM' },
   { label: 'MID', value: 'MID' },
@@ -29,20 +43,18 @@ const paymentMethod = [
   { label: "FOOD PANDA", value: "food_panda" },
   { label: "STREETBY", value: "streetby" },
   { label: "GRAB FOOD", value: "grab_food" },
-  { label: "GC CLAIMED (OTHERS)", value: "gc_claimed_others" },
-  { label: "GC CLAIMED (OWN)", value: "gc_claimed_own" },
-  { label: "A/R ______________", value: "a_r_1" },
-  { label: "A/R ______________", value: "a_r_2" },
-  { label: "SUB TOTAL TRADE POS", value: "sub_total_trade_pos" }
 ];
 
 
+const arrayCashierName = [
+  { label: 'CashierName corresponds to a certain name', value: 'nameof cashier' },
+]
+// re edit that later
 
 
-
-
-const curency = [
-  { label: '$', value: '$'}
+const currency = [
+  { label: 'Philippines', value: 'Philippines'},
+  { label: 'USA', value: 'USA'}
 ]
 const TransactionForm = () => {
   const [form] = Form.useForm(); // Form instance
@@ -95,32 +107,41 @@ const TransactionForm = () => {
     form.resetFields();
 
   };
-
+  
+  const transactionID = 0;
   return (
     
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
 
-      <> 
-      clock here
-      ________________________________________
-      </>
-      
-      <h1> include Crucial Cashier info </h1>
-      <h1> opiton: make date available </h1>
+      <div style={{ display: 'flex', flexDirection: 'column', width: '100%', marginBottom: '20px' }}>
+        <h1 style={{ fontSize: '15px', fontWeight: 600, color: '#333' }}>Transaction ID: </h1>
+        <h1 style={{ fontSize: '15px', fontWeight: 600, color: '#333' }}>Date: {formattedDate}</h1>
+
+        <div
+          style={{
+            marginTop: '10px',
+            borderBottom: '1px solid #ccc',  // Thin line
+            boxShadow: 'inset 0 1px 2px rgba(0, 0, 0, 0.1)',  // Sunken effect
+          }}
+        />
+      </div>
+
+
       <Form form={form} layout="vertical" hideRequiredMark onFinish={handleFormSubmit}>
         
         {/* Name Field */}
         <Form.Item 
           name="name" 
-          label="Name" 
+          label="Select Cashier / existing cashier add his transaction here" 
           rules={[{ required: true, message: 'Please enter a name' }]}
         > 
-          <Input
+          <Select
+            prefix={<SwapOutlined />}
             size="middle"
-            placeholder="Enter a name"
-            prefix={<UserOutlined />}
+            placeholder="Select Shift"
+            options={arrayCashierName}
+            style={{ width: 250 }}
             allowClear
-            autoComplete="off"
           />
         </Form.Item>
 
@@ -131,10 +152,10 @@ const TransactionForm = () => {
           rules={[{ required: true, message: 'Select Status' }]}
         >
           <Select
-            // prefix={<CheckCircleFilled />}
+            prefix={<CreditCardOutlined />}
             size="middle"
-            
-            style={{ width: 200 }}
+            placeholder='Select Payment Method'
+            style={{ width: 210}}
             allowClear
             options={paymentMethod}
           />
@@ -143,13 +164,13 @@ const TransactionForm = () => {
         {/* Shift Selection */}
         <Form.Item
           name="shift"
-          label="Shift"
+          label="Shift one at a time correspond to A certain cashier"
           rules={[{ required: true, message: 'Select a shift(s)' }]}
         > 
           <Select
             prefix={<SwapOutlined />}
             size="middle"
-            placeholder="Select Shift"
+            placeholder="Shift"
             options={shifts}
             style={{ width: 120 }}
             allowClear
@@ -158,20 +179,22 @@ const TransactionForm = () => {
 
         <Form.Item
           name="amount" 
-          label="Amount" 
+          label="Amount / make the UI for th" 
           rules={[{ required: true, message: 'Input amount' }]}
         >   
-
+          
           <Select
-            prefix={<CheckCircleFilled />} // change to Currency something related icon 
+            // prefix={<DollarOutlined  />} // change to Currency something related icon 
             // make the the display currency icon or someting 
             // make default display
-            defaultValue={'$'} // everytime a value is selected change the prefix 
+            defaultValue={currency[0]} // everytime a value is selected change the prefix 
             size="middle"
-            style={{ width: 40 }}
+            style={{ width: 130, textAlign: 'center' }}
             allowClear
-            options={curency}
+            options={currency}
           />
+
+          {/* how about htis / make the selection a currency from country */}
           <InputNumber<number>
             defaultValue={1000}
             formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
@@ -196,8 +219,24 @@ const TransactionForm = () => {
         </Space>
       </Form>
 
-      <h1> Something Represent Gross Total //  </h1> 
-      <h1> Net Total or Something  </h1> 
+      <div>
+        <div
+          style={{
+            margin: '20px 0',
+            borderBottom: '1px solid #ccc',  // thin border for the line
+            boxShadow: 'inset 0 1px 2px rgba(0, 0, 0, 0.1)',  // adds a sunken effect
+          }}
+        ></div>
+        
+        <Row gutter={16} style={{ marginTop: '10px' }}>
+          <Col span={12}>
+            <Statistic title="Number of Transactions Per Period" value={112893} formatter={formatter} />
+          </Col>
+          <Col span={12}>
+            <Statistic title="Total Amount" value={112893} precision={2} formatter={formatter} />
+          </Col>
+        </Row>
+      </div>
     </div>
   );
 };
