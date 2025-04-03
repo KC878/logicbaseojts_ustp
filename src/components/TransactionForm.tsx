@@ -229,12 +229,13 @@ const TransactionForm = () => {
         ></div>
         
         <Row gutter={16} style={{ marginTop: '10px' }}>
+          <Col span={12} >
+              <Statistic title="Total Amount" value={112893} precision={2} formatter={formatter} />
+            </Col>
           <Col span={12}>
-            <Statistic title="Number of Transactions Per Period" value={112893} formatter={formatter} />
+            <Statistic title="Number of Transactions Per Period" value={9} formatter={formatter} />
           </Col>
-          <Col span={12}>
-            <Statistic title="Total Amount" value={112893} precision={2} formatter={formatter} />
-          </Col>
+          
         </Row>
       </div>
     </div>
