@@ -19,10 +19,12 @@ import type { StatisticProps } from 'antd';
 import { Col, Row, Statistic } from 'antd';
 import CountUp from 'react-countup';
 
-import { formattedDate } from '@src/utils/Date';
+import { formattedDate } from '@src/utils/Date'; 
 
 import { useCashiersName } from '@src/hooks/useCashiersName';
 import { getCashiersName } from '@src/services/getCashiersName';
+
+import { useGenerateTransactionID } from '@src/hooks/useGenerateTransactionID'
 
 import { useEffect } from 'react';
 
@@ -66,6 +68,7 @@ const TransactionForm: React.FC = () => {
   const [form] = Form.useForm(); // Form instance
 
   const { cashiersName, loading } = getCashiersName(); // has already defined value 
+  const { transactionID } = useGenerateTransactionID(); // has transaction ID unique every render
 
   // ✅ Move `message.useMessage()` here
  
@@ -118,8 +121,8 @@ const TransactionForm: React.FC = () => {
 
   };
 
-  const transactionID = 0;
 
+  
   // will run onto how to connect this when selecting a specific cashier and transaction date
 
   // solve only display is active cashiers
@@ -134,7 +137,6 @@ const TransactionForm: React.FC = () => {
    // call this function to process the service
   
 
-
   return (
     
     
@@ -143,7 +145,7 @@ const TransactionForm: React.FC = () => {
 
       <h1> </h1>
       <div style={{ display: 'flex', flexDirection: 'column', width: '100%', marginBottom: '20px' }}>
-        <h1 style={{ fontSize: '15px', fontWeight: 600, color: '#333' }}>Transaction ID: </h1>
+        <h1 style={{ fontSize: '15px', fontWeight: 600, color: '#333' }}>Transaction ID: {transactionID} </h1>
         <h1 style={{ fontSize: '15px', fontWeight: 600, color: '#333' }}>Date: {formattedDate}</h1>
 
         <div
@@ -161,12 +163,12 @@ const TransactionForm: React.FC = () => {
         {/* Name Field */}
         <Form.Item 
           name="name" 
-          label="Select Cashier / existing cashier add his transaction here" 
-          rules={[{ required: true, message: 'Please enter a name' }]}
+          label="Cashier" 
+          rules={[{ required: true, message: 'Select a Cashier' }]}
         > 
           <Select
           
-            prefix={<SwapOutlined />}
+            prefix={<UserOutlined />}
             loading={loading}
             size="middle"
             placeholder="Select Cashier"

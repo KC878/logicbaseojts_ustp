@@ -1,5 +1,4 @@
 
-
 const now = new Date();
 export const formattedDate = new Intl.DateTimeFormat('en-US', {
   month: 'long',

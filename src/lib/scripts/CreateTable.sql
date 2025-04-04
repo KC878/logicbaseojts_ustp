@@ -37,16 +37,14 @@ CREATE TABLE pos_summary (
 );
 
 CREATE TABLE transactions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    transactionID CHAR(32) PRIMARY KEY,  -- UUID without hyphens
     cashierID INT NOT NULL,
     paymentID INT NOT NULL,
-    pos_summary_id INT NOT NULL,
     date DATE NOT NULL,
-    shift VARCHAR(50) NOT NULL, -- ✅ Changed from SET to VARCHAR(50)
+    shift VARCHAR(50) NOT NULL,
     amount DECIMAL(12,2) NOT NULL,
     FOREIGN KEY (cashierID) REFERENCES cashiers(cashierID) ON DELETE CASCADE,
-    FOREIGN KEY (paymentID) REFERENCES payment_methods(paymentID) ON DELETE CASCADE,
-    FOREIGN KEY (pos_summary_id) REFERENCES pos_summary(id) ON DELETE CASCADE
+    FOREIGN KEY (paymentID) REFERENCES payment_methods(paymentID) ON DELETE CASCADE
 );
 
 CREATE TABLE pos_adjustments (
