@@ -143,14 +143,15 @@ const TransactionForm: React.FC = () => {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
       
 
-      <h1> </h1>
-      <div style={{ display: 'flex', flexDirection: 'column', width: '100%', marginBottom: '20px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', width: '100%'}}>
+        <h1 style={{ fontSize: '15px', fontWeight: 600, color: '#333', marginBottom: '1px' }}>Date: {formattedDate}</h1>
         <h1 style={{ fontSize: '15px', fontWeight: 600, color: '#333' }}>Transaction ID: {transactionID} </h1>
-        <h1 style={{ fontSize: '15px', fontWeight: 600, color: '#333' }}>Date: {formattedDate}</h1>
+        
 
         <div
           style={{
             marginTop: '10px',
+            marginBottom: '20px', 
             borderBottom: '1px solid #ccc',  // Thin line
             boxShadow: 'inset 0 1px 2px rgba(0, 0, 0, 0.1)',  // Sunken effect
           }}
