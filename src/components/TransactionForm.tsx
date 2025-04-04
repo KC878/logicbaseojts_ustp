@@ -83,10 +83,11 @@ const TransactionForm: React.FC = () => {
   const handleFormSubmit = (values: FormValues) => {
 
     alert(` Form
-      Name: ${selectedName}
-      Shift: ${selectedShifts}
-      Date: ${startDate} - ${endDate}
-      Status: ${selectedStatus}
+      Name: ${cashier}
+      Payment Method: ${paymentMethod}
+      Shift: ${shift}
+      Amount: ${amount}
+      Country: ${country}
     `);
 
     // Reset form fields
@@ -154,7 +155,7 @@ const TransactionForm: React.FC = () => {
             style={{ width: 250 }}
             allowClear
             value={cashier}
-            onChange={(name) => alert(`Name: ${name}`)} // see the value on change
+            onChange={(cashier) => setCashier(cashier)} // see the value on change
             notFoundContent={
               loadingCashiers ? (
                 <div style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}>
@@ -181,7 +182,7 @@ const TransactionForm: React.FC = () => {
             loading={loadingPayments}
             options={loadingPayments ? [] : optionsPaymentMethod}
             value={paymentMethod}
-            onChange={(method) => alert(`Payment Method: ${method}`)}
+            onChange={(method) => setPaymentMethod(method)}
             notFoundContent={
               loadingPayments ? (
                 <div style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}>
@@ -205,7 +206,7 @@ const TransactionForm: React.FC = () => {
             placeholder="Shift"
             options={shifts}
             value={shift}
-            onChange={(shift) => alert(`Shift: ${shift}`)}
+            onChange={(shift) => setShift(shift)}
             style={{ width: 120 }}
             allowClear
           />
@@ -257,7 +258,7 @@ const TransactionForm: React.FC = () => {
             <Statistic title="Number of Transactions Per Period" value={9} formatter={formatter} />
           </Col>
         </Row>
-        
+
         <div
           style={{
             margin: '20px 0',
