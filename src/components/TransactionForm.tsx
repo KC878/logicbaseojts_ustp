@@ -1,5 +1,5 @@
 
-import { Form, Input, InputNumber, Select, DatePicker, Space, Button } from 'antd';
+import { Form, Spin, Input, InputNumber, Select, DatePicker, Space, Button } from 'antd';
 import React from 'react';
 import { 
   UserOutlined,
@@ -65,7 +65,7 @@ const currency = [
 const TransactionForm: React.FC = () => {
   const [form] = Form.useForm(); // Form instance
 
-  const { cashiersName } = getCashiersName(); // has already defined value 
+  const { cashiersName, loading } = getCashiersName(); // has already defined value 
 
   // ✅ Move `message.useMessage()` here
  
@@ -165,12 +165,22 @@ const TransactionForm: React.FC = () => {
           rules={[{ required: true, message: 'Please enter a name' }]}
         > 
           <Select
+          
             prefix={<SwapOutlined />}
+            loading={loading}
             size="middle"
-            placeholder="Select Shift"
-            options={optionsNames}
+            placeholder="Select Cashier"
+            options={loading ? [] : optionsNames}
             style={{ width: 250 }}
             allowClear
+            notFoundContent={
+              loading ? (
+                <div style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}>
+                  <Spin size="small" />
+                </div>
+              ) : null
+            }
+
           />
         </Form.Item>
 
@@ -198,6 +208,7 @@ const TransactionForm: React.FC = () => {
         > 
           <Select
             prefix={<SwapOutlined />}
+            loading={loading}
             size="middle"
             placeholder="Shift"
             options={shifts}
