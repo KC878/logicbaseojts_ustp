@@ -7,7 +7,6 @@ import { getPaymentMethods } from '@src/lib/querries/querries';
 
 
 
-
 export async function GET(){
   try{
      

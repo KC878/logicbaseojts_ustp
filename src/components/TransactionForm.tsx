@@ -21,12 +21,12 @@ import CountUp from 'react-countup';
 
 import { formattedDate } from '@src/utils/Date'; 
 
-import { useCashiersName } from '@src/hooks/useCashiersName';
-import { getCashiersName } from '@src/services/getCashiersName';
+import { useAddTransaction } from '@src/hooks/useAddTransaction';
+import { useFetchData } from '@src/services/useFetchData';
 
 import { useGenerateTransactionID } from '@src/hooks/useGenerateTransactionID'
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const formatter: StatisticProps['formatter'] = (value) => (
   <CountUp end={value as number} separator="," />
@@ -37,27 +37,6 @@ const shifts = [
   { label: 'PM', value: 'PM' }
 ];
 
-const paymentMethod = [
-  { label: "CASH", value: "cash" },
-  { label: "CHECK", value: "check" },
-  { label: "BPI CREDIT CARD", value: "bpi_credit_card" },
-  { label: "BPI DEBIT CARD", value: "bpi_debit_card" },
-  { label: "METRO CREDIT CARD", value: "metro_credit_card" },
-  { label: "METRO DEBIT CARD", value: "metro_debit_card" },
-  { label: "PAY MAYA", value: "pay_maya" },
-  { label: "AUB CREDIT CARD", value: "aub_credit_card" },
-  { label: "GCASH", value: "gcash" },
-  { label: "FOOD PANDA", value: "food_panda" },
-  { label: "STREETBY", value: "streetby" },
-  { label: "GRAB FOOD", value: "grab_food" },
-];
-
-
-
-
-
-
-// re edit that later
 
 
 const currency = [
@@ -67,25 +46,32 @@ const currency = [
 const TransactionForm: React.FC = () => {
   const [form] = Form.useForm(); // Form instance
 
-  const { cashiersName, loading } = getCashiersName(); // has already defined value 
+  const [cashier, setCashier] = useState(''); // temporary set Global for this next
+  const [paymentMethod, setPaymentMethod] = useState('');
+  const [shift, setShift] = useState('');
+  const [country, setCountry] = useState('');
+  const [amount, setAmount] = useState(0);
+
+
+  // Define type for CashierType
+  type CashierType = {
+    id: string;
+    name: string;
+  }
+
+  type PaymentMethodType = {
+    id: number;
+    paymentType: string;
+  }
+
+  const { data: cashiers, loading: loadingCashiers } = useFetchData<CashierType>('/api/GET/getCashiersName');
+
+  const { data: paymentMethods, loading: loadingPayments } = useFetchData<PaymentMethodType>('/api/GET/getPaymentMethods');
+
+
   const { transactionID } = useGenerateTransactionID(); // has transaction ID unique every render
 
   // ✅ Move `message.useMessage()` here
- 
-  const { 
-    setFinishSubmit,
-    setSelectedName, 
-    setSelectedShifts, 
-    setDates, 
-    setSelectedStatus, 
-    setShowDrower,
-    
-    selectedName,
-    selectedShifts,
-    startDate,
-    endDate,
-    selectedStatus
-  } = useAddCashier();
 
   interface FormValues {
     name: string;
@@ -96,15 +82,6 @@ const TransactionForm: React.FC = () => {
 
   const handleFormSubmit = (values: FormValues) => {
 
-    setSelectedName(values.name);
-    setSelectedShifts(values.shift);
-    setDates(
-      values.date ? values.date[0].format('YYYY-MM-DD') : '',
-      values.date ? values.date[1].format('YYYY-MM-DD') : ''
-    );
-    setSelectedStatus(values.isActive);
-    // database submit
-
     alert(` Form
       Name: ${selectedName}
       Shift: ${selectedShifts}
@@ -112,10 +89,6 @@ const TransactionForm: React.FC = () => {
       Status: ${selectedStatus}
     `);
 
-    
-    
-
-    setFinishSubmit(true); // setFinish submit global
     // Reset form fields
     form.resetFields();
 
@@ -128,16 +101,20 @@ const TransactionForm: React.FC = () => {
   // solve only display is active cashiers
 
   // assign global name for cashier contemplate if is it necessary
-  const optionsNames = cashiersName.map((cashier, index) => ({
-    key: `${index + 1}`,  
-    label: `${index + 1}. ${cashier.name}`,  
+  const optionsNames = cashiers.map((cashier, index) => ({
+    key: index,  
+    label: cashier.name,  
     value: cashier.name,  
   }));
-  
    // call this function to process the service
   
-
-  return (
+  const optionsPaymentMethod = paymentMethods.map((method, index) => ({
+    key: index,
+    label: method.paymentType,
+    value: method.paymentType
+  }))
+  // define payment Method 
+  return ( 
     
     
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
@@ -170,18 +147,20 @@ const TransactionForm: React.FC = () => {
           <Select
           
             prefix={<UserOutlined />}
-            loading={loading}
+            loading={loadingCashiers}
             size="middle"
             placeholder="Select Cashier"
-            options={loading ? [] : optionsNames}
+            options={loadingCashiers ? [] : optionsNames}
             style={{ width: 250 }}
             allowClear
+            value={cashier}
+            onChange={(name) => alert(`Name: ${name}`)} // see the value on change
             notFoundContent={
-              loading ? (
+              loadingCashiers ? (
                 <div style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}>
                   <Spin size="small" />
                 </div>
-              ) : null
+              ) : null // repeated occurence store it in a function later
             }
 
           />
@@ -199,7 +178,17 @@ const TransactionForm: React.FC = () => {
             placeholder='Select Payment Method'
             style={{ width: 210}}
             allowClear
-            options={paymentMethod}
+            loading={loadingPayments}
+            options={loadingPayments ? [] : optionsPaymentMethod}
+            value={paymentMethod}
+            onChange={(method) => alert(`Payment Method: ${method}`)}
+            notFoundContent={
+              loadingPayments ? (
+                <div style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}>
+                  <Spin size="small" />
+                </div>
+              ) : null // repeated occurence store it in a function later
+            }
           />
         </Form.Item>
 
@@ -211,43 +200,72 @@ const TransactionForm: React.FC = () => {
         > 
           <Select
             prefix={<SwapOutlined />}
-            loading={loading}
+            // loading={loading}
             size="middle"
             placeholder="Shift"
             options={shifts}
+            value={shift}
+            onChange={(shift) => alert(`Shift: ${shift}`)}
             style={{ width: 120 }}
             allowClear
           />
         </Form.Item>
 
-        <Form.Item
-          name="amount" 
-          label="Amount / make the UI for th" 
-          rules={[{ required: true, message: 'Input amount' }]}
-        >   
-          
-          <Select
-            // prefix={<DollarOutlined  />} // change to Currency something related icon 
-            // make the the display currency icon or someting 
-            // make default display
-            defaultValue={currency[0]} // everytime a value is selected change the prefix 
-            size="middle"
-            style={{ width: 130, textAlign: 'center' }}
-            allowClear
-            options={currency}
-          />
+        <Form.Item label="Amount / make the UI for th">
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <Select
+              // defaultValue={currency[0]}
+              size="middle"
+              style={{ width: 130}}
+              allowClear
+              options={currency}
+              value={country}
+              onChange={(country) => setCountry(country)}
+            />
+            <Form.Item
+              name="amount"
+              noStyle
+              rules={[{ required: true, message: 'Input amount' }]}
+            >
+              <InputNumber<number>
+                defaultValue={0.00}
+                precision={2}
+                min={0}
+                formatter={(value) => {
+                  const num = typeof value === 'number' ? value : parseFloat(value || '0');
+                  return `₱ ${num.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                  })}`;
+                }}
+                parser={(value) => value?.replace(/₱\s?|,/g, '') as unknown as number}
+                style={{ width: 160 }}
 
-          {/* how about htis / make the selection a currency from country */}
-          <InputNumber<number>
-            defaultValue={1000}
-            min={0}
-            formatter={(value) => `₱ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-            parser={(value) => value?.replace(/\$\s?|(,*)/g, '') as unknown as number}
-            style={{ width: 160}}
-            // onChange={onChange}
-          />
+                onChange={(amount) => setAmount(amount !== null ? amount : 0)}
+              />
 
-        </Form.Item>    
+            </Form.Item>
+          </div>
+        </Form.Item> 
+
+      <div>
+        <Row gutter={16} style={{ marginTop: '10px' }}>
+          <Col span={12} >
+              <Statistic title="Total Amount" value={amount} precision={2} formatter={formatter} />
+            </Col>
+          <Col span={12}>
+            <Statistic title="Number of Transactions Per Period" value={9} formatter={formatter} />
+          </Col>
+        </Row>
+        
+        <div
+          style={{
+            margin: '20px 0',
+            borderBottom: '1px solid #ccc',  // thin border for the line
+            boxShadow: 'inset 0 1px 2px rgba(0, 0, 0, 0.1)',  // adds a sunken effect
+          }}
+        ></div>
+      </div>
 
         {/* Submit Button */}
         <Space>
@@ -256,32 +274,14 @@ const TransactionForm: React.FC = () => {
             type="primary" 
             htmlType="submit"
           >
-            Submit
+            Confirm
           </Button>
           <Button onClick={() => setShowDrower(false)}> Cancel </Button>
           
         </Space>
       </Form>
 
-      <div>
-        <div
-          style={{
-            margin: '20px 0',
-            borderBottom: '1px solid #ccc',  // thin border for the line
-            boxShadow: 'inset 0 1px 2px rgba(0, 0, 0, 0.1)',  // adds a sunken effect
-          }}
-        ></div>
-        
-        <Row gutter={16} style={{ marginTop: '10px' }}>
-          <Col span={12} >
-              <Statistic title="Total Amount" value={112893} precision={2} formatter={formatter} />
-            </Col>
-          <Col span={12}>
-            <Statistic title="Number of Transactions Per Period" value={9} formatter={formatter} />
-          </Col>
-          
-        </Row>
-      </div>
+      
     </div>
   );
 };

@@ -2,12 +2,16 @@
 export const getCashiers = "SELECT name, shift, startDate, endDate, isActive FROM cashiers";
 
 export const getCashiersName = "SELECT cashierID, name FROM cashiers";
-// 
+
+
+
+export const getPaymentMethods = "SELECT paymentID, paymentType FROM payment_methods ORDER BY paymentID ASC";
+
+//
 
 
 export const getExistingCashierName = "SELECT * FROM cashiers WHERE name = ?";
 
-export const getPaymentMethods = "SELECT * FROM payment_methods";
 
 
 export const getPosSummary = "SELECT * FROM pos_summary";

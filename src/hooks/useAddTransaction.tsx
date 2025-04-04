@@ -5,7 +5,7 @@ interface GlobalState{
   setCashiersName: (names: string[]) => void; 
 }
 
-export const useCashiersName = create<GlobalState>((set) => ({
+export const useAddTransaction = create<GlobalState>((set) => ({
   cashiersName: [],
   setCashiersName: (names) => set({ cashiersName: names})
   
