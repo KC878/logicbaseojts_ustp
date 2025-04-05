@@ -12,7 +12,7 @@ import {
   CreditCardOutlined,
 } from '@ant-design/icons';
 
-import { useAddCashier } from '@src/hooks/useAddCashier';
+
 import dayjs from 'dayjs';
 
 import type { StatisticProps } from 'antd';
@@ -27,6 +27,7 @@ import { useFetchData } from '@src/services/useFetchData';
 import { useGenerateTransactionID } from '@src/hooks/useGenerateTransactionID'
 
 import { useEffect, useState } from 'react';
+import { useAddCashier } from '@src/hooks/useAddCashier';
 
 const formatter: StatisticProps['formatter'] = (value) => (
   <CountUp end={value as number} separator="," />
@@ -46,11 +47,36 @@ const currency = [
 const TransactionForm: React.FC = () => {
   const [form] = Form.useForm(); // Form instance
 
-  const [cashier, setCashier] = useState(''); // temporary set Global for this next
-  const [paymentMethod, setPaymentMethod] = useState('');
-  const [shift, setShift] = useState('');
-  const [country, setCountry] = useState('');
-  const [amount, setAmount] = useState(0);
+  // const [cashier, setCashier] = useState(''); // temporary set Global for this next
+  // const [paymentMethod, setPaymentMethod] = useState('');
+  // const [shift, setShift] = useState('');
+  // const [country, setCountry] = useState('');
+  // const [amount, setAmount] = useState(0);
+
+  const { setShowDrower } = useAddCashier(); // open and close control Drawer
+
+  const { 
+    transactionDate,
+    globalTransactionID,
+    cashier, 
+    paymentMethod,
+    transactionShift,
+    currency,
+    amount, 
+                        /// global Transaction Items 
+    setTransactionDate,
+    setGlobalTransactionID,
+    setCashier,
+    setPaymentMethod,
+    setTransactionShift,
+    setCurrency,
+    setAmount,
+
+  
+  } = useAddTransaction();
+
+
+
 
 
   // Define type for CashierType
@@ -82,13 +108,13 @@ const TransactionForm: React.FC = () => {
 
   const handleFormSubmit = (values: FormValues) => {
 
-    alert(` Form
-      Name: ${cashier}
-      Payment Method: ${paymentMethod}
-      Shift: ${shift}
-      Amount: ${amount}
-      Country: ${country}
-    `);
+    // alert(` Form
+    //   Name: ${cashier}
+    //   Payment Method: ${paymentMethod}
+    //   Shift: ${shift}
+    //   Amount: ${amount}
+    //   Country: ${country}
+    // `);
 
     // Reset form fields
     form.resetFields();
