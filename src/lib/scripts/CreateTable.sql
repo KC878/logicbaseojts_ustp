@@ -4,6 +4,7 @@
 -- Ensure tables are dropped in order to avoid FK constraint errors
 DROP TABLE IF EXISTS pos_adjustments;
 DROP TABLE IF EXISTS transactions;
+DROP TABLE IF EXISTS currencies;
 DROP TABLE IF EXISTS pos_summary;
 DROP TABLE IF EXISTS payment_methods;
 DROP TABLE IF EXISTS cashiers;
@@ -36,17 +37,27 @@ CREATE TABLE pos_summary (
     short_over DECIMAL(12,2) NOT NULL DEFAULT 0
 );
 
+-- currencies 
+CREATE TABLE currencies (
+	currencyID VARCHAR(50) PRIMARY KEY, -- Character
+    currency CHAR(32) NOT NULL
+);
+
 CREATE TABLE transactions (
     transactionID CHAR(32) PRIMARY KEY,  -- UUID without hyphens
     cashierID INT NOT NULL,
     paymentID INT NOT NULL,
     date DATE NOT NULL,
     shift VARCHAR(50) NOT NULL,
+    currencyID VARCHAR(50) NOT NULL,
     amount DECIMAL(12,2) NOT NULL,
     FOREIGN KEY (cashierID) REFERENCES cashiers(cashierID) ON DELETE CASCADE,
-    FOREIGN KEY (paymentID) REFERENCES payment_methods(paymentID) ON DELETE CASCADE
+    FOREIGN KEY (paymentID) REFERENCES payment_methods(paymentID) ON DELETE CASCADE,
+    FOREIGN KEY (currencyID) REFERENCES currencies(currencyID) ON DELETE CASCADE
 );
+
 -- add Table currency and have foreign key contrainsts on Transactions
+
 CREATE TABLE pos_adjustments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     pos_summary_id INT NOT NULL,

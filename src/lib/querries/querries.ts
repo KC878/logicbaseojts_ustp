@@ -7,6 +7,7 @@ export const getCashiersName = "SELECT cashierID, name FROM cashiers";
 
 export const getPaymentMethods = "SELECT paymentID, paymentType FROM payment_methods ORDER BY paymentID ASC";
 
+export const getCurrencies = "SELECT currencyID, currency FROM currencies ORDER BY currencyID ASC";
 //
 
 

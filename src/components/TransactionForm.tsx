@@ -49,11 +49,12 @@ const TransactionForm: React.FC = () => {
   const [cashier, setCashier] = useState(''); 
   const [paymentMethod, setPaymentMethod] = useState('');
   const [shift, setShift] = useState('');
-  const [country, setCountry] = useState('');
+  const [currency, setCurrency] = useState('');
+  const [currencySymbol, setCurrencySymbol] = useState('');
   const [amount, setAmount] = useState(0);
+  const { transactionID } = useGenerateTransactionID(); // has transaction ID unique every render
 
   const { setShowDrower } = useAddCashier(); // open and close control Drawer
-
 
   // Define type for CashierType
   type CashierType = {
@@ -66,12 +67,25 @@ const TransactionForm: React.FC = () => {
     paymentType: string;
   }
 
+  type CurrencyType = {
+    currencyID: string;
+    currency: string; 
+  }
+
   const { data: cashiers, loading: loadingCashiers } = useFetchData<CashierType>('/api/GET/getCashiersName');
-
   const { data: paymentMethods, loading: loadingPayments } = useFetchData<PaymentMethodType>('/api/GET/getPaymentMethods');
+  const { data: currencies, loading: loadingCurrencies } = useFetchData<CurrencyType>('/api/GET/getCurrencies');
+  // form Gets
 
+  // use Effect to listen to updates on changes
+  useEffect(() => {
+    const selectedCurrency = currencies.find(item => item.currencyID === currency);
+    selectedCurrency ? setCurrencySymbol(selectedCurrency.currency) : setCurrencySymbol('');
+  }, [currency, currencies])
 
-  const { transactionID } = useGenerateTransactionID(); // has transaction ID unique every render
+  
+
+  
 
   // ✅ Move `message.useMessage()` here
 
@@ -91,7 +105,7 @@ const TransactionForm: React.FC = () => {
       Payment Method: ${paymentMethod}
       Shift: ${shift}
       Amount: ${amount}
-      Country: ${country}
+      Country: ${currency}
     `);
     // reads the value
 
@@ -124,6 +138,15 @@ const TransactionForm: React.FC = () => {
     label: method.paymentType,
     value: method.paymentType
   }))
+
+  const optionsCurrencies = currencies.map((item) => ({
+    key: item.currencyID,
+    label: item.currencyID,
+    value: item.currencyID,
+  }))
+
+  // make functions to store this maps for reusability
+  // return a value statement
   // define payment Method 
   return ( 
     
@@ -236,9 +259,10 @@ const TransactionForm: React.FC = () => {
                 size="middle"
                 style={{ width: 130 }}
                 allowClear
-                options={currency}
-                value={country}
-                onChange={(value) => setCountry(value)}
+                loading={loadingCurrencies}
+                options={loadingCurrencies ? [] : optionsCurrencies}
+                value={currency}
+                onChange={(value) => setCurrency(value)}
               />
             </Form.Item>
 
@@ -249,18 +273,23 @@ const TransactionForm: React.FC = () => {
               rules={[{ required: true, message: 'Please input amount' }]}
             >
               <InputNumber<number>
-                onClick={() => {alert('clicked input')}}
+                // onClick={() => {alert('clicked input')}}
                 precision={2}
                 min={0}
                 formatter={(value) => {
                   const num = typeof value === 'number' ? value : parseFloat(value || '0');
-                  return `₱ ${num.toLocaleString(undefined, {
+                  return `${currencySymbol} ${num.toLocaleString(undefined, {
                     minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                  })}`;
+                    maximumFractionDigits: 2,
+                  })}`; // uses updated symbol
                 }}
-                parser={(value) => value?.replace(/₱\s?|,/g, '') as unknown as number}
-                style={{ width: 160 }}
+                
+                parser={(value) => {
+                  const regex = new RegExp(`${currencySymbol}\\s?|,`, 'g');
+                  return parseFloat(value?.replace(regex, '') || '0');
+                }}
+                
+                
                 onChange={(amount) => setAmount(amount !== null ? amount : 0)}
               />
             </Form.Item>

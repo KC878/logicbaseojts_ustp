@@ -1,36 +1,35 @@
--- Insert Seed Data for Cashiers
-INSERT INTO cashiers (name, shift) VALUES
-('Cherry', 'AM'),
-('Cristie', 'PM');
+-- Currencies with Symbols
+INSERT INTO currencies (currencyID, currency) VALUES
+('USD', '$'),
+('PHP', '₱'),
+('EUR', '€'),
+('JPY', '¥'),
+('GBP', '£');
 
--- Insert Seed Data for Payment Methods
-INSERT INTO payment_methods (payment_type) VALUES
-('Cash'), ('Check'), ('BPI Credit Card'), ('BPI Debit Card'),
-('Metro Credit Card'), ('Metro Debit Card'), ('Pay Maya'), 
-('AUB Credit Card'), ('GCash'), ('Food Panda'), ('StreetBy'),
-('Grab Food'), ('GC Claimed (Others)'), ('GC Claimed (Own)'), ('A/R');
+-- Payment Methods
+INSERT INTO payment_methods (paymentType) VALUES
+('CASH'), 
+('CHECK'), 
+('BPI CREDIT CARD'), 
+('BPI DEBIT CARD'),
+('METRO CREDIT CARD'), 
+('METRO DEBIT CARD'), 
+('PAY MAYA'), 
+('AUB CREDIT CARD'), 
+('GCASH'), 
+('FOOD PANDA'), 
+('STREETBY'),
+('GRAB FOOD');
 
--- Insert Seed Data for Transactions
-INSERT INTO transactions (cashier_id, payment_id, date, shift, amount) VALUES
-(1, 1, '2025-03-17', 'AM', 63608.00),
-(2, 1, '2025-03-17', 'PM', 38168.00),
-(1, 3, '2025-03-17', 'AM', 5022.00),
-(2, 3, '2025-03-17', 'PM', 10026.89),
-(1, 7, '2025-03-17', 'AM', 16510.67),
-(2, 7, '2025-03-17', 'PM', 7835.71),
-(1, 9, '2025-03-17', 'AM', 3108.00),
-(2, 9, '2025-03-17', 'PM', 3345.00),
-(2, 10, '2025-03-17', 'PM', 1520.00),
-(2, 12, '2025-03-17', 'PM', 2759.00);
+-- Cashiers
+INSERT INTO cashiers (name, shift, startDate, endDate, isActive) VALUES
+('John Doe', 'AM', '2025-01-01', NULL, 1),
+('Jane Smith', 'PM', '2025-01-01', NULL, 1);
 
--- Insert Seed Data for POS Summary
-INSERT INTO pos_summary (date, shift, total_trade_pos, total_non_trade_pos, grand_total, z_reading_pos) VALUES
-('2025-03-17', 'AM', 88248.67, 0.00, 88248.67, 88248.58),
-('2025-03-17', 'MID', 4279.00, 60.00, 4339.00, 60.00),
-('2025-03-17', 'PM', 59375.60, 0.00, 59375.60, 59375.66);
-
--- Insert Seed Data for Short/Over POS
-INSERT INTO short_over_pos (date, shift, amount) VALUES
-('2025-03-17', 'AM', 0.09),
-('2025-03-17', 'MID', 4279.00),
-('2025-03-17', 'PM', 0.04);
+-- Transactions (Now with currencyID included)
+INSERT INTO transactions (transactionID, cashierID, paymentID, date, shift, currencyID, amount) VALUES
+(REPLACE(UUID(), '-', ''), 1, 1, '2025-01-01', 'AM', 'PHP', 100.50),  -- John Doe, Cash
+(REPLACE(UUID(), '-', ''), 1, 2, '2025-01-01', 'AM', 'PHP', 200.75),  -- John Doe, Check
+(REPLACE(UUID(), '-', ''), 2, 3, '2025-01-01', 'PM', 'USD', 500.00),  -- Jane Smith, BPI Credit Card
+(REPLACE(UUID(), '-', ''), 2, 4, '2025-01-01', 'PM', 'USD', 150.30),  -- Jane Smith, BPI Debit Card
+(REPLACE(UUID(), '-', ''), 1, 5, '2025-01-01', 'AM', 'EUR', 300.00);  -- John Doe, Metro Credit Card
