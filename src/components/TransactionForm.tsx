@@ -94,8 +94,14 @@ const TransactionForm: React.FC = () => {
       Country: ${country}
     `);
     // reads the value
+
     // Reset form fields
     form.resetFields();
+
+
+    setAmount(0);
+    setShowDrower(false);
+      
 
   };
 
@@ -200,7 +206,7 @@ const TransactionForm: React.FC = () => {
         {/* Shift Selection */}
         <Form.Item
           name="shift"
-          label="Shift one at a time correspond to A certain cashier"
+          label="Shift"
           rules={[{ required: true, message: 'Select a shift(s)' }]}
         > 
           <Select
@@ -216,24 +222,34 @@ const TransactionForm: React.FC = () => {
           />
         </Form.Item>
 
-        <Form.Item label="Amount / make the UI for th">
+
+
+        <Form.Item>
           <div style={{ display: 'flex', gap: '10px' }}>
-            <Select
-              // defaultValue={currency[0]}
-              size="middle"
-              style={{ width: 130}}
-              allowClear
-              options={currency}
-              value={country}
-              onChange={(country) => setCountry(country)}
-            />
+            {/* Currency  */}
             <Form.Item
+              label="Currency"
+              name="currency"
+              rules={[{ required: true, message: 'Please select currency' }]}
+            >
+              <Select
+                size="middle"
+                style={{ width: 130 }}
+                allowClear
+                options={currency}
+                value={country}
+                onChange={(value) => setCountry(value)}
+              />
+            </Form.Item>
+
+            {/* Amount with its own label and validation */}
+            <Form.Item
+              label="Amount"
               name="amount"
-              noStyle
-              rules={[{ required: true, message: 'Input amount' }]}
+              rules={[{ required: true, message: 'Please input amount' }]}
             >
               <InputNumber<number>
-                defaultValue={0.00}
+                onClick={() => {alert('clicked input')}}
                 precision={2}
                 min={0}
                 formatter={(value) => {
@@ -245,13 +261,13 @@ const TransactionForm: React.FC = () => {
                 }}
                 parser={(value) => value?.replace(/₱\s?|,/g, '') as unknown as number}
                 style={{ width: 160 }}
-
                 onChange={(amount) => setAmount(amount !== null ? amount : 0)}
               />
-
             </Form.Item>
           </div>
-        </Form.Item> 
+        </Form.Item>
+
+
 
       <div>
         <Row gutter={16} style={{ marginTop: '10px' }}>
@@ -259,7 +275,7 @@ const TransactionForm: React.FC = () => {
               <Statistic title="Total Amount" value={amount} precision={2} formatter={formatter} />
             </Col>
           <Col span={12}>
-            <Statistic title="Number of Transactions Per Period" value={9} formatter={formatter} />
+            <Statistic title="Cashier: Number of Transactions" value={9} formatter={formatter} />
           </Col>
         </Row>
 

@@ -46,7 +46,7 @@ CREATE TABLE transactions (
     FOREIGN KEY (cashierID) REFERENCES cashiers(cashierID) ON DELETE CASCADE,
     FOREIGN KEY (paymentID) REFERENCES payment_methods(paymentID) ON DELETE CASCADE
 );
-
+-- add Table currency and have foreign key contrainsts on Transactions
 CREATE TABLE pos_adjustments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     pos_summary_id INT NOT NULL,
