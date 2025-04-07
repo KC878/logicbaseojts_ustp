@@ -12,7 +12,7 @@ import {
   CreditCardOutlined,
 } from '@ant-design/icons';
 
-
+import NumberPad from './NumperPad';
 import dayjs from 'dayjs';
 
 import type { StatisticProps } from 'antd';
@@ -39,10 +39,6 @@ const shifts = [
 
 
 
-const currency = [
-  { label: 'Philippines', value: 'Philippines'},
-  { label: 'USA', value: 'USA'}
-]
 const TransactionForm: React.FC = () => {
   const [form] = Form.useForm(); // Form instance
 
@@ -84,7 +80,9 @@ const TransactionForm: React.FC = () => {
   }, [currency, currencies])
 
   
-
+  const handleAmountChange = (value: number) => {
+    setAmount(value);
+  }; // amount Change
   
 
   // ✅ Move `message.useMessage()` here
@@ -272,26 +270,8 @@ const TransactionForm: React.FC = () => {
               name="amount"
               rules={[{ required: true, message: 'Please input amount' }]}
             >
-              <InputNumber<number>
-                // onClick={() => {alert('clicked input')}}
-                precision={2}
-                min={0}
-                formatter={(value) => {
-                  const num = typeof value === 'number' ? value : parseFloat(value || '0');
-                  return `${currencySymbol} ${num.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}`; // uses updated symbol
-                }}
-                
-                parser={(value) => {
-                  const regex = new RegExp(`${currencySymbol}\\s?|,`, 'g');
-                  return parseFloat(value?.replace(regex, '') || '0');
-                }}
-                
-                
-                onChange={(amount) => setAmount(amount !== null ? amount : 0)}
-              />
+              <NumberPad onChange={handleAmountChange} currencySymbol={currencySymbol} />
+
             </Form.Item>
           </div>
         </Form.Item>
