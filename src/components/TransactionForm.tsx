@@ -259,7 +259,7 @@ const TransactionForm: React.FC = () => {
             >
               <Select
                 size="middle"
-                style={{ width: 130 }}
+                style={{ width: 80 }}
                 allowClear
                 loading={loadingCurrencies}
                 options={loadingCurrencies ? [] : optionsCurrencies}
@@ -287,7 +287,8 @@ const TransactionForm: React.FC = () => {
           <Col span={12} >
               <Statistic title="Total Amount" value={amount} precision={2} formatter={() => formatter(amount, currencySymbol)} />
 
-            <Statistic title="Cashier: Number of Transactions" value={9} />
+            <Statistic title="Cashier: Number of Transactions" value={9} /> 
+            {/* dummy value */}
           </Col>
         </Row>
 
