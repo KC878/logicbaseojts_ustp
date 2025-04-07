@@ -21,7 +21,7 @@ const NumberPad: React.FC<NumberPadProps> = ({ onChange, currencySymbol = '$' })
     setValue(prev => prev.slice(0, -1));
     setActiveKey('⌫'); // Highlight the backspace key when pressed
   };
-
+  
   const numberPad = (
     <Space direction="vertical">
       {['123', '456', '789', '0.⌫'].map((row, i) => (
@@ -95,6 +95,7 @@ const NumberPad: React.FC<NumberPadProps> = ({ onChange, currencySymbol = '$' })
       const num = parseFloat(value.replace(/[^0-9.-]+/g, ''));
       onChange(num); // Send the selected value to the parent
       setOpen(false);
+      e.preventDefault(); // Prevent the form from submitting
     }
   };
 

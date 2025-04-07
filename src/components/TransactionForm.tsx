@@ -84,6 +84,10 @@ const TransactionForm: React.FC = () => {
     setAmount(value);
   }; // amount Change
   
+  // Formatter function for Total Ammount
+  const formatter = (value: number, currencySymbol: string) => {
+    return value ? `${currencySymbol} ${value.toFixed(2)}` : `${currencySymbol} 0.00`; // Format value with currency and two decimal places
+  };
 
   // ✅ Move `message.useMessage()` here
 
@@ -281,10 +285,9 @@ const TransactionForm: React.FC = () => {
       <div>
         <Row gutter={16} style={{ marginTop: '10px' }}>
           <Col span={12} >
-              <Statistic title="Total Amount" value={amount} precision={2} formatter={formatter} />
-            </Col>
-          <Col span={12}>
-            <Statistic title="Cashier: Number of Transactions" value={9} formatter={formatter} />
+              <Statistic title="Total Amount" value={amount} precision={2} formatter={() => formatter(amount, currencySymbol)} />
+
+            <Statistic title="Cashier: Number of Transactions" value={9} />
           </Col>
         </Row>
 
